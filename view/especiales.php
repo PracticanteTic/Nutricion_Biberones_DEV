@@ -17,16 +17,16 @@ if (!isset($_SESSION["nombre"])) {
 
       function findEspeciales() {
 
-        button = document.getElementById("consultar");
-        button.disabled = true;
-        setTimeout(function () {
+        button = document.getElementById("consultar"); // Desactiva el btn
+        button.disabled = true; 
+        setTimeout(function () { // Despues de 200 msn reactiva el btn
           button.removeAttribute("disabled");
         }, 200);
 
         episodioInput = document.getElementById('episodio');
         episodioValue = 0;
         if (episodioInput != null) {
-          episodioValue = document.getElementById('episodio').value;
+          episodioValue = document.getElementById('episodio').value; // Obtiene el episodio ingresado
           $.ajax({
             url: "../logica/tablaEspecialesFormulas.php/",
             method: "POST",
@@ -78,13 +78,13 @@ if (!isset($_SESSION["nombre"])) {
                 <div class="row">
                   <div class="col-md-1"></div>
 
-                  <div class="col-4">
+                  <div class="col-4"> <!-- Contenedor para "episodio" -->
                     <label for="episodio" class="col-form-label">Episodio</label>
                     <input type="number" class="form-control" id="episodio" name="episodio"
                       placeholder="Introduce el episodio" required autofocus>
                   </div>
 
-                  <div id="div_Old_Formula" class="col-md-4" style="margin-top: 6px">
+                  <div id="div_Old_Formula" class="col-md-4" style="margin-top: 6px"> <!-- Contenedor para "Formula a consultar" -->
                     <label id="oldFormulaLbl" for="" class="form-label">Formula a consultar</label>
                     <select class="form-select " name="search_Formula" id="search_Formula" required value="0">
                     </select>
@@ -92,7 +92,7 @@ if (!isset($_SESSION["nombre"])) {
 
                   <div class="col-md-1"></div>
 
-                  <div class="col-md-2">
+                  <div class="col-md-2"> <!-- boton para los datos segun el episodio enviado-->
                     <div div class="form-group">
                       <input type="submit" id="consultar" name="consultar" class="btn"
                         style="background-color: #95BE27; margin-top:37px;  color:#ffffff" value="Consultar">
@@ -108,7 +108,7 @@ if (!isset($_SESSION["nombre"])) {
             <hr>
         </form>
         <?php
-        if (isset($_POST['consultar'])) {
+        if (isset($_POST['consultar'])) { // Verificar que el btn consultar este declarado / creado
 
           $episodio = $_POST['episodio'];
           $buscarFormula = $_POST['search_Formula'];
@@ -183,7 +183,7 @@ if (!isset($_SESSION["nombre"])) {
           }
         }
         ?>
-        <div class="card-header " id="todo">
+        <div class="card-header " id="todo"> <!-- Contenedor con la info del paciente, formula especial y Boton de enviar -->
 
           <div class="row mb-3">
 
@@ -353,11 +353,11 @@ if (!isset($_SESSION["nombre"])) {
           <br><br>
 
 
-
+          
           <?php if (isset($cereal, $cereal_obsvc, $aceite, $aceite_obsvc, $procrill, $procrill_obsvc, $nessugar, $nessugar_obsvc, $sal, $sal_obsvc, $formula, $otros, $formula_obsvc)) { ?>
             <div class="card-header">
               <div class="input-group-append">
-                <h3 id="titulo">Informacion de produccion segun numero de biberones a preparar</h3>
+                <h3 id="titulo">Informacion de produccion segÃºn nÃºmero de biberones a preparar</h3>
                 <div>
 
                 </div>
@@ -395,7 +395,7 @@ if (!isset($_SESSION["nombre"])) {
                   <td><?php echo $cereal * 6; ?></td>
                   <td><?php echo $cereal * 7; ?></td>
                   <td><?php echo $cereal * 8; ?></td>
-                  <td id="idCerealObs" class="col-editable"><?php echo $cereal_obsvc; ?></td>
+                  <td id="idCerealObs" class="col-editable"><?php echo $cereal_obsvc; ?></td> <!-- Campo observaciones -->
                 </tr>
                 <tr>
                   <td>Aceite (ml)</td>
@@ -407,7 +407,7 @@ if (!isset($_SESSION["nombre"])) {
                   <td><?php echo $aceite * 6; ?></td>
                   <td><?php echo $aceite * 7; ?></td>
                   <td><?php echo $aceite * 8; ?></td>
-                  <td id="idAceiteObs" class="col-editable"><?php echo $aceite_obsvc; ?></td>
+                  <td id="idAceiteObs" class="col-editable"><?php echo $aceite_obsvc; ?></td> <!-- Campo observaciones -->
 
                 </tr>
                 <tr>
@@ -420,7 +420,7 @@ if (!isset($_SESSION["nombre"])) {
                   <td><?php echo $procrill * 6; ?></td>
                   <td><?php echo $procrill * 7; ?></td>
                   <td><?php echo $procrill * 8; ?></td>
-                  <td id="idProcrillObs" class="col-editable"><?php echo $procrill_obsvc; ?></td>
+                  <td id="idProcrillObs" class="col-editable"><?php echo $procrill_obsvc; ?></td> <!-- Campo observaciones -->
                 </tr>
                 <tr>
                   <td>Nessucar (g)</td>
@@ -432,7 +432,7 @@ if (!isset($_SESSION["nombre"])) {
                   <td><?php echo $nessugar * 6; ?></td>
                   <td><?php echo $nessugar * 7; ?></td>
                   <td><?php echo $nessugar * 8; ?></td>
-                  <td id="idNessucarObs" class="col-editable"><?php echo $nessugar_obsvc; ?></td>
+                  <td id="idNessucarObs" class="col-editable"><?php echo $nessugar_obsvc; ?></td> <!-- Campo observaciones -->
                 </tr>
                 <tr>
                   <td>Sal (g)</td>
@@ -444,7 +444,7 @@ if (!isset($_SESSION["nombre"])) {
                   <td><?php echo $sal * 6; ?></td>
                   <td><?php echo $sal * 7; ?></td>
                   <td><?php echo $sal * 8; ?></td>
-                  <td id="idSalObs" class="col-editable"><?php echo $sal_obsvc; ?></td>
+                  <td id="idSalObs" class="col-editable"><?php echo $sal_obsvc; ?></td> <!-- Campo observaciones -->
                 </tr>
                 <tr>
                   <td>Formula (g)</td>
@@ -456,7 +456,7 @@ if (!isset($_SESSION["nombre"])) {
                   <td><?php echo $formula * 6; ?></td>
                   <td><?php echo $formula * 7; ?></td>
                   <td><?php echo $formula * 8; ?></td>
-                  <td id="idFormulaObs" class="col-editable"><?php echo $formula_obsvc; ?></td>
+                  <td id="idFormulaObs" class="col-editable"><?php echo $formula_obsvc; ?></td> <!-- Campo observaciones -->
                 </tr>
                 <tr>
                   <td>Otros</td>
@@ -468,7 +468,7 @@ if (!isset($_SESSION["nombre"])) {
                   <td><?php echo $otros * 6; ?></td>
                   <td><?php echo $otros * 7; ?></td>
                   <td><?php echo $otros * 8; ?></td>
-                  <td id="idOtrosObs" class="col-editable"><?php echo $otros_obsvc; ?></td>
+                  <td id="idOtrosObs" class="col-editable"><?php echo $otros_obsvc; ?></td> <!-- Campo observaciones -->
                 </tr>
               <?php } ?>
               <tbody>
@@ -476,7 +476,8 @@ if (!isset($_SESSION["nombre"])) {
 
               </tbody>
             </table>
-            <button class="btn" style="background-color: #95BE27; margin-top:37px;  color:#ffffff" id="editar">EDITAR</buttonc>
+            <!-- BOTONES PARA EDITAR LA TABLA Y GUARDAR SUS CAMBIOS -->
+            <button class="btn" style="background-color:#95BE27; margin-top:37px;  color:#ffffff" id="editar">EDITAR</buttonc>
             <button class="btn" style="background-color: #95BE27; margin-top:37px;  color:#ffffff" id="guardar">GUARDAR CAMBIOS</button>
           </div>
         </div>
@@ -510,15 +511,15 @@ $(document).ready(function() {
 });
 
 $('#editar').click(function(e) {
-  e.preventDefault();
+  e.preventDefault(); 
   
-  // Habilitar la edición convirtiendo las celdas en inputs de texto
+  // Habilitar la edicion convirtiendo las celdas en inputs de texto (Solo las de .col-editable)
   $('.col-editable').each(function() {
     var currentValue = $(this).text();
-    $(this).html('<input type="text" value="' + currentValue + '" />');
+    $(this).html('<input type="text" value="' + currentValue + '" />'); // Asigna contenido html a la etiqueta
   });
   
-  // Mostrar el botón de guardar y ocultar el de editar
+  // Mostrar el botÃ³n de guardar y ocultar el de editar
   $('#editar').hide();
   $('#guardar').show();
 });
@@ -528,16 +529,18 @@ $("#search_Formula").change(function() {
   console.log(formula);
 });
 
-
+// Evento al dar clic sobre el boton Guardar Cambios
 $('#guardar').click(function(e) {
-  e.preventDefault();
+  e.preventDefault(); // Previene que ejecute una accion por defecto de la etiqueta
 
-  var valoresPrimeraColumna = [];
-  var valoresSegundaColumna = [];
+  // Arrays para guardar los valores que sean introducidos (modificados) de la tabla 
+  var valoresPrimeraColumna = []; // Columna con el th -> 1
+  var valoresSegundaColumna = []; // Columna con el th -> Observaciones
 
-  $('#table tbody tr').each(function() {
-    var inputElem = $(this).find('.col-editable').first().find('input');
-    var nuevoValor = inputElem.val() || inputElem.attr('value');
+  // Obtiene los nuevos valores digitados en la tabla
+  $('#table tbody tr').each(function() { // Para cada tr(fila) del tbody(cuerpo de la tabla), aplico la funcion
+    var inputElem = $(this).find('.col-editable').first().find('input'); // Agarro el primer input de clase .col-editable que encuentre 
+    var nuevoValor = inputElem.val() || inputElem.attr('value'); 
     valoresPrimeraColumna.push(nuevoValor);
 
     if (nuevoValor) {
@@ -553,7 +556,7 @@ $('#guardar').click(function(e) {
 
     var inputObsElem = $(this).find('.col-editable').last().find('input');
     
-    // Si el campo está vacío, asegurarse de guardarlo como una cadena vacía
+    // Si el campo estï¿½ vacï¿½o, asegurarse de guardarlo como una cadena vacï¿½a
     var nuevaObservacion = inputObsElem.val() !== undefined ? inputObsElem.val() : '';
     valoresSegundaColumna.push(nuevaObservacion);
 
@@ -566,7 +569,7 @@ $('#guardar').click(function(e) {
   let id = $("#id").val();
 
   console.log('Valores de la primera columna:', valoresPrimeraColumna);
-  console.log('Valores de la última columna:', valoresSegundaColumna);
+  console.log('Valores de la Ãºltima columna:', valoresSegundaColumna);
   console.log('Valores del id:', id);
 
   $.ajax({
@@ -579,7 +582,7 @@ $('#guardar').click(function(e) {
         },
         dataType: "json", // Especificamos que esperamos JSON como respuesta
         success: function(response) {
-            console.log(response); // Para depuración
+            console.log(response); // Para depuraciï¿½n
                 Swal.fire({
                     position: 'top-center',
                     icon: 'success',
@@ -590,7 +593,7 @@ $('#guardar').click(function(e) {
         },
         error: function(xhr, status, error) {
             console.error("AJAX Error:", status, error);
-            console.log("Response Text:", xhr.responseText); // Mostrar la respuesta completa para depuración
+            console.log("Response Text:", xhr.responseText); // Mostrar la respuesta completa para depuraciï¿½n
         }
     });
 });
