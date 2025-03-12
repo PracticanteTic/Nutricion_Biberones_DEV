@@ -1,0 +1,35 @@
+.MainTittles{
+    margin-bottom: 30px;
+}
+
+.titles{
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.text-divider{
+    margin: 2em 0;
+    line-height: 0; 
+    text-align: left;
+
+}
+
+.text-divider span{
+    background-color: #f7f7f7; 
+    padding: 1em;
+    color: #006941 !important;
+    font-weight: 700;
+}
+
+.text-divider .left-span{
+    background-color: transparent; 
+    width: 15px;
+}
+
+.text-divider:before{ 
+    content: " "; 
+    display: block; 
+    border-top: 1px solid #006941; 
+    border-bottom: 2px solid #006941;
+}
+		
