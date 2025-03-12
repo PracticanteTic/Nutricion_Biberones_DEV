@@ -2,32 +2,34 @@
 //Activamos el almacenamiento en el buffer
 ob_start();
 session_start();
-include '../config/Conexion.php';
-if (!isset($_SESSION["nombre"])) {
-  header("Location: login.html");
+include '../config/Conexion.php'; // Usa los metodos que interactuan directamente con la base de datos
+if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (Login)
+  header("Location: login.html"); // Redirecciona a login.html 
 } else {
-  $pageTitle = "Consolidado de solicitudes de formulas especiales";
+  $pageTitle = "Consolidado de solicitudes de formulas especiales"; // Es el titulo de la pagina; esta variable la utiliza 
   require 'template/header.php';
 
+  // Verifica que hayan accedido a "FormulasEspeciales" ¿? (EN DUDA)
   if ($_SESSION['FormulasEspeciales'] == 1) {
 
     ?>
     <br>
     <script>
-
+      // Este metodo es llamado apenas cargue todo el DOM
       function findEspeciales() {
-
-        button = document.getElementById("consultar"); // Desactiva el btn
-        button.disabled = true; 
-        setTimeout(function () { // Despues de 200 msn reactiva el btn
+        button = document.getElementById("consultar"); // Obtiene el boton Consultar
+        button.disabled = true; // Desactiva el boton
+        setTimeout(function () { // El boton sera reactivado despues de 200 ms
           button.removeAttribute("disabled");
         }, 200);
 
-        episodioInput = document.getElementById('episodio');
+        episodioInput = document.getElementById('episodio'); // Obtiene el elemento "episodio" del html
         episodioValue = 0;
-        if (episodioInput != null) {
+        if (episodioInput != null) { // Valida que se haya ingresado informacion al input de episodio
           episodioValue = document.getElementById('episodio').value; // Obtiene el episodio ingresado
-          $.ajax({
+          
+          // Realizar la peticion POST para recibir los datos 
+          $.ajax({ 
             url: "../logica/tablaEspecialesFormulas.php/",
             method: "POST",
             data: { "episodioValue": episodioValue },
@@ -473,7 +475,7 @@ if (!isset($_SESSION["nombre"])) {
               <?php } ?>
               <tbody>
 
-
+              
               </tbody>
             </table>
             <!-- BOTONES PARA EDITAR LA TABLA Y GUARDAR SUS CAMBIOS -->
@@ -510,12 +512,13 @@ $(document).ready(function() {
   $('#guardar').hide();
 });
 
+// Evento al dar clic sobre el boton Editar 
 $('#editar').click(function(e) {
   e.preventDefault(); 
   
   // Habilitar la edicion convirtiendo las celdas en inputs de texto (Solo las de .col-editable)
   $('.col-editable').each(function() {
-    var currentValue = $(this).text();
+    var currentValue = $(this).text(); // Guardo el valor del elemento
     $(this).html('<input type="text" value="' + currentValue + '" />'); // Asigna contenido html a la etiqueta
   });
   
@@ -523,9 +526,11 @@ $('#editar').click(function(e) {
   $('#editar').hide();
   $('#guardar').show();
 });
+}
 
-$("#search_Formula").change(function() {
-  var formula = $("#search_Formula option:selected").val();
+// #search_Formula 
+$("#search_Formula").change(function() { // Se ejecuta cada que seleccionan una opcion diferentes en el select
+  var formula = $("#search_Formula option:selected").val(); // Obteniene el valor de la opcion seleccionada
   console.log(formula);
 });
 
@@ -537,15 +542,17 @@ $('#guardar').click(function(e) {
   var valoresPrimeraColumna = []; // Columna con el th -> 1
   var valoresSegundaColumna = []; // Columna con el th -> Observaciones
 
-  // Obtiene los nuevos valores digitados en la tabla
+  // Recorre cada una de los tr(filas) y obtiene los nuevos valores digitados en la tabla
   $('#table tbody tr').each(function() { // Para cada tr(fila) del tbody(cuerpo de la tabla), aplico la funcion
     var inputElem = $(this).find('.col-editable').first().find('input'); // Agarro el primer input de clase .col-editable que encuentre 
-    var nuevoValor = inputElem.val() || inputElem.attr('value'); 
-    valoresPrimeraColumna.push(nuevoValor);
+    var nuevoValor = inputElem.val() || inputElem.attr('value'); // Guarda el  valor nuevo 
+    valoresPrimeraColumna.push(nuevoValor); // Añade el valor obtenido a la matriz.
 
-    if (nuevoValor) {
-      $(this).find('.col-editable').first().html(nuevoValor);
+    // Luego de obtener los valores, verifica que "nuevoValor" no esté vacia para guardarla dentro de la tabla
+    if (nuevoValor) { 
+      $(this).find('.col-editable').first().html(nuevoValor); //En la fila actual encuentra el primer input perteneciente a la clase .col-editable y plasma su valor en el html
 
+      // Recorre cada uno de los td de la tr(fila) actual
       $(this).find('td').each(function(index) {
         if (index > 1 && index < 9) {
           var valorMultiplicado = nuevoValor * index;

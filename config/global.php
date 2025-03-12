@@ -1,4 +1,6 @@
 <?php 
+// Constantes para conectar con la base de datos 
+
 define("DB_HOST","172.28.24.117");
 define("DB_NAME", "Nutricion_Biberones_DEV");
 // define("DB_NAME", "Nutricion_Biberones_DEV"); --> Pruebas
