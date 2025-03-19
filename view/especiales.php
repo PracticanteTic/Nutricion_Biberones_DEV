@@ -12,14 +12,14 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
   // Verifica que hayan accedido a "FormulasEspeciales" ¿? (EN DUDA)
   if ($_SESSION['FormulasEspeciales'] == 1) {
 
-    ?>
+?>
     <br>
     <script>
       // Este metodo es llamado apenas cargue todo el DOM
       function findEspeciales() {
         button = document.getElementById("consultar"); // Obtiene el boton Consultar
         button.disabled = true; // Desactiva el boton
-        setTimeout(function () { // El boton sera reactivado despues de 200 ms
+        setTimeout(function() { // El boton sera reactivado despues de 200 ms
           button.removeAttribute("disabled");
         }, 200);
 
@@ -27,13 +27,16 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
         episodioValue = 0;
         if (episodioInput != null) { // Valida que se haya ingresado informacion al input de episodio
           episodioValue = document.getElementById('episodio').value; // Obtiene el episodio ingresado
-          
+
           // Realizar la peticion POST para recibir los datos 
-          $.ajax({ 
-            url: "../logica/tablaEspecialesFormulas.php/",
+          $.ajax({
+            url: "../logica/tablaEspecialesFormulas.php/", // Para obtener los datos
             method: "POST",
-            data: { "episodioValue": episodioValue },
-            success: function (data) {
+            data: {
+              "episodioValue": episodioValue
+            },
+            success: function(data) { // data contiene la respuesta enviada por tablaEspecialesFormular.php
+
               var quickScript2 = new Function($(data).text());
               quickScript2();
             }
@@ -43,9 +46,9 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
 
       }
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", function() {
         episodioInput = document.getElementById('episodio');
-        episodioInput.addEventListener('blur', function () {
+        episodioInput.addEventListener('blur', function() {
 
           findEspeciales();
 
@@ -53,18 +56,15 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
       });
 
 
-      document.addEventListener("DOMContentLoaded", function () {
+      document.addEventListener("DOMContentLoaded", function() {
         episodioInput = document.getElementById('episodio');
-        episodioInput.addEventListener('keypress', function (event) {
+        episodioInput.addEventListener('keypress', function(event) {
           if (event.keyCode == 13) {
             findEspeciales();
 
           }
         });
       });
-
-
-
     </script>
     <!--Contenido-->
     <!-- Content Wrapper. Contains page content -->
@@ -149,7 +149,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
           INNER JOIN tipo_formula ON solicitudes_especiales.id_tipo_formula = tipo_formula.id
           WHERE episodio = $episodio AND id_tipo_formula = $buscarFormula ORDER BY solicitudes_especiales.id DESC LIMIT 1";
           // echo "<script>console.log($query);</script>";
-    
+
           $result_biberones = mysqli_query($conexion, $query);
 
 
@@ -196,17 +196,17 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <label for="inputBirthday" class="control-label">Episodio: </label>
                 <input type="text" style="background-color:#ffffff" class="form-control"
                   value="<?php if (isset($episodio)) {
-                    echo $episodio;
-                  } ?> " id="episodioResult" name='episodioResult' readonly
+                            echo $episodio;
+                          } ?> " id="episodioResult" name='episodioResult' readonly
                   required>
               </div>
             </div>
 
             <div class="col-md-2">
-            <input hidden type="text" style="background-color:#ffffff" class="form-control"
-                  value="<?php if (isset($id)) {
-                    echo $id;
-                  } ?> " id="id">
+              <input hidden type="text" style="background-color:#ffffff" class="form-control"
+                value="<?php if (isset($id)) {
+                          echo $id;
+                        } ?> " id="id">
             </div>
 
             <div class="col-md-4">
@@ -214,8 +214,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <label class="control-label" for="FechaCreacion">Fecha de realizacion: </label>
                 <input type="text" style="background-color:#ffffff" class="form-control" id="FechaCreacion"
                   name="FechaCreacion" value="<?php if (isset($fecha_modificacion)) {
-                    echo $fecha_modificacion;
-                  } ?> "
+                                                echo $fecha_modificacion;
+                                              } ?> "
                   readonly required autofocus />
               </div>
             </div>
@@ -242,8 +242,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <label class="control-label" for="Nombre">Identificacion: </label>
                 <input type="text" style="background-color:#ffffff" class="form-control" id="identificacion"
                   name="identificacion" value="<?php if (isset($identificacion)) {
-                    echo $identificacion;
-                  } ?> " readonly
+                                                  echo $identificacion;
+                                                } ?> " readonly
                   required autofocus />
               </div>
             </div>
@@ -252,8 +252,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <label class="control-label" for="Nombre">Nombre y apellido: </label>
                 <input type="text" style="background-color:#ffffff" class="form-control" id="nombre_apellido"
                   name="nombre_apellido" value="<?php if (isset($nombre_apellido)) {
-                    echo $nombre_apellido;
-                  } ?>" readonly
+                                                  echo $nombre_apellido;
+                                                } ?>" readonly
                   required autofocus />
               </div>
             </div>
@@ -262,8 +262,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <label for="inputBirthday" class="control-label">Fecha de Nacimiento: </label>
                 <input type="text" style=" background-color:#ffffff" class="form-control"
                   value="<?php if (isset($fecha_nac)) {
-                    echo $fecha_nac;
-                  } ?> " id="fecha_nacimiento" name='fecha_nacimiento'
+                            echo $fecha_nac;
+                          } ?> " id="fecha_nacimiento" name='fecha_nacimiento'
                   readonly required>
               </div>
             </div>
@@ -286,8 +286,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <label for="tipo_formula" class="control-label">Nombre de la formula: </label>
               <input type="text" style=" background-color:#ffffff" class="form-control"
                 value="<?php if (isset($tipo_formula)) {
-                  echo $tipo_formula;
-                } ?>" id="tipo_formula" name='tipo_formula' readonly
+                          echo $tipo_formula;
+                        } ?>" id="tipo_formula" name='tipo_formula' readonly
                 required>
             </div>
 
@@ -296,8 +296,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <label class="control-label" for="cuchara">Cuchara medidora: </label>
                 <input type="text" style="background-color:#ffffff" class="form-control" id="cuchara" name="cuchara"
                   value="<?php if (isset($cuchara)) {
-                    echo $cuchara;
-                  } ?>" readonly required autofocus />
+                            echo $cuchara;
+                          } ?>" readonly required autofocus />
               </div>
             </div>
 
@@ -306,8 +306,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <label class="control-label" for="volumen">Volumen biberon: </label>
                 <input type="text" style="background-color:#ffffff" class="form-control" id="volumen" name="volumen"
                   value="<?php if (isset($volumen_biberon)) {
-                    echo $volumen_biberon;
-                  } ?>" readonly required autofocus />
+                            echo $volumen_biberon;
+                          } ?>" readonly required autofocus />
               </div>
             </div>
 
@@ -315,8 +315,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <label for="inputBirthday" class="control-label">Numero biberones: </label>
               <input type="text" style="background-color:#ffffff" class="form-control"
                 value="<?php if (isset($numero_biberones)) {
-                  echo $numero_biberones;
-                } ?> " id="numero_biberon"
+                          echo $numero_biberones;
+                        } ?> " id="numero_biberon"
                 name='numero_biberon' readonly required>
             </div>
 
@@ -324,8 +324,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <label for="tipo_formula" class="control-label">Nutricionista que prescribe: </label>
               <input type="text" style=" background-color:#ffffff" class="form-control"
                 value="<?php if (isset($name_nutricionista)) {
-                  echo $name_nutricionista;
-                } ?>" id="name_nutricionista"
+                          echo $name_nutricionista;
+                        } ?>" id="name_nutricionista"
                 name="name_nutricionista" readonly required>
             </div>
 
@@ -333,8 +333,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <label for="inputBirthday" class="control-label">Registro: </label>
               <input type="text" style="background-color:#ffffff" class="form-control"
                 value="<?php if (isset($registro)) {
-                  echo $registro;
-                } ?> " id="user_registro" name="user_registro" readonly
+                          echo $registro;
+                        } ?> " id="user_registro" name="user_registro" readonly
                 required>
             </div>
           </div>
@@ -344,18 +344,18 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <label for="" class="form-label">Observaciones:</label>
               <textarea type="textarea" name="observaciones" id="observaciones" class="form-control bg-white" rows="5"
                 cols="40" aria-describedby="helpId" value="<?php if (isset($observaciones)) {
-                  echo $observaciones;
-                } ?>" readonly
+                                                              echo $observaciones;
+                                                            } ?>" readonly
                 required><?php if (isset($observaciones)) {
-                  echo $observaciones;
-                } ?></textarea>
+                            echo $observaciones;
+                          } ?></textarea>
             </div>
           </div>
 
           <br><br>
 
 
-          
+
           <?php if (isset($cereal, $cereal_obsvc, $aceite, $aceite_obsvc, $procrill, $procrill_obsvc, $nessugar, $nessugar_obsvc, $sal, $sal_obsvc, $formula, $otros, $formula_obsvc)) { ?>
             <div class="card-header">
               <div class="input-group-append">
@@ -475,20 +475,20 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <?php } ?>
               <tbody>
 
-              
+
               </tbody>
-            </table>
-            <!-- BOTONES PARA EDITAR LA TABLA Y GUARDAR SUS CAMBIOS -->
-            <button class="btn" style="background-color:#95BE27; margin-top:37px;  color:#ffffff" id="editar">EDITAR</buttonc>
-            <button class="btn" style="background-color: #95BE27; margin-top:37px;  color:#ffffff" id="guardar">GUARDAR CAMBIOS</button>
-          </div>
+              </table>
+              <!-- BOTONES PARA EDITAR LA TABLA Y GUARDAR SUS CAMBIOS -->
+              <button class="btn" style="background-color:#95BE27; margin-top:37px;  color:#ffffff" id="editar">EDITAR</buttonc>
+                <button class="btn" style="background-color: #95BE27; margin-top:37px;  color:#ffffff" id="guardar">GUARDAR CAMBIOS</button>
         </div>
       </div>
     </div>
     </div>
+    </div>
     </div><!-- /.content-wrapper -->
     <!--Fin-Contenido-->
-    <?php
+  <?php
   } else {
     require 'noacceso.php';
   }
@@ -508,102 +508,102 @@ ob_end_flush();
   // Evita volver atras en el navegador
 </script>
 <script>
-$(document).ready(function() {
-  $('#guardar').hide();
-});
-
-// Evento al dar clic sobre el boton Editar 
-$('#editar').click(function(e) {
-  e.preventDefault(); 
-  
-  // Habilitar la edicion convirtiendo las celdas en inputs de texto (Solo las de .col-editable)
-  $('.col-editable').each(function() {
-    var currentValue = $(this).text(); // Guardo el valor del elemento
-    $(this).html('<input type="text" value="' + currentValue + '" />'); // Asigna contenido html a la etiqueta
-  });
-  
-  // Mostrar el botón de guardar y ocultar el de editar
-  $('#editar').hide();
-  $('#guardar').show();
-});
-}
-
-// #search_Formula 
-$("#search_Formula").change(function() { // Se ejecuta cada que seleccionan una opcion diferentes en el select
-  var formula = $("#search_Formula option:selected").val(); // Obteniene el valor de la opcion seleccionada
-  console.log(formula);
-});
-
-// Evento al dar clic sobre el boton Guardar Cambios
-$('#guardar').click(function(e) {
-  e.preventDefault(); // Previene que ejecute una accion por defecto de la etiqueta
-
-  // Arrays para guardar los valores que sean introducidos (modificados) de la tabla 
-  var valoresPrimeraColumna = []; // Columna con el th -> 1
-  var valoresSegundaColumna = []; // Columna con el th -> Observaciones
-
-  // Recorre cada una de los tr(filas) y obtiene los nuevos valores digitados en la tabla
-  $('#table tbody tr').each(function() { // Para cada tr(fila) del tbody(cuerpo de la tabla), aplico la funcion
-    var inputElem = $(this).find('.col-editable').first().find('input'); // Agarro el primer input de clase .col-editable que encuentre 
-    var nuevoValor = inputElem.val() || inputElem.attr('value'); // Guarda el  valor nuevo 
-    valoresPrimeraColumna.push(nuevoValor); // Añade el valor obtenido a la matriz.
-
-    // Luego de obtener los valores, verifica que "nuevoValor" no esté vacia para guardarla dentro de la tabla
-    if (nuevoValor) { 
-      $(this).find('.col-editable').first().html(nuevoValor); //En la fila actual encuentra el primer input perteneciente a la clase .col-editable y plasma su valor en el html
-
-      // Recorre cada uno de los td de la tr(fila) actual
-      $(this).find('td').each(function(index) {
-        if (index > 1 && index < 9) {
-          var valorMultiplicado = nuevoValor * index;
-          $(this).html(valorMultiplicado);
-        }
-      });
-    }
-
-    var inputObsElem = $(this).find('.col-editable').last().find('input');
-    
-    // Si el campo est� vac�o, asegurarse de guardarlo como una cadena vac�a
-    var nuevaObservacion = inputObsElem.val() !== undefined ? inputObsElem.val() : '';
-    valoresSegundaColumna.push(nuevaObservacion);
-
-    $(this).find('.col-editable').last().html(nuevaObservacion);
+  $(document).ready(function() {
+    $('#guardar').hide();
   });
 
-  $('#editar').show();
-  $('#guardar').hide(); 
-  let episodio = $("#episodioResult").val();
-  let id = $("#id").val();
+  // Evento al dar clic sobre el boton Editar 
+  $('#editar').click(function(e) {
+    e.preventDefault();
 
-  console.log('Valores de la primera columna:', valoresPrimeraColumna);
-  console.log('Valores de la última columna:', valoresSegundaColumna);
-  console.log('Valores del id:', id);
-
-  $.ajax({
-        type: "POST",
-        url: 'http://vmsrv-web2.hospital.com/Nutricion/logica/actualizarEspeciales.php', //aca procesamos el CRUD
-        data: {
-          valoresPrimeraColumna: valoresPrimeraColumna,
-          valoresSegundaColumna: valoresSegundaColumna,
-          id: id
-        },
-        dataType: "json", // Especificamos que esperamos JSON como respuesta
-        success: function(response) {
-            console.log(response); // Para depuraci�n
-                Swal.fire({
-                    position: 'top-center',
-                    icon: 'success',
-                    title: 'Formula actualizada con exito',
-                    showConfirmButton: false,
-                    timer: 1500
-                })
-        },
-        error: function(xhr, status, error) {
-            console.error("AJAX Error:", status, error);
-            console.log("Response Text:", xhr.responseText); // Mostrar la respuesta completa para depuraci�n
-        }
+    // Habilitar la edicion convirtiendo las celdas en inputs de texto (Solo las de .col-editable)
+    $('.col-editable').each(function() {
+      var currentValue = $(this).text(); // Guardo el valor del elemento
+      $(this).html('<input type="text" value="' + currentValue + '" />'); // Asigna contenido html a la etiqueta
     });
-});
+
+    // Mostrar el botón de guardar y ocultar el de editar
+    $('#editar').hide();
+    $('#guardar').show();
+  });
+  
+
+  // #search_Formula 
+  $("#search_Formula").change(function() { // Se ejecuta cada que seleccionan una opcion diferentes en el select
+    var formula = $("#search_Formula option:selected").val(); // Obteniene el valor de la opcion seleccionada
+    console.log(formula);
+  });
+
+  // Evento al dar clic sobre el boton Guardar Cambios
+  $('#guardar').click(function(e) {
+    e.preventDefault(); // Previene que ejecute una accion por defecto de la etiqueta
+
+    // Arrays para guardar los valores que sean introducidos (modificados) de la tabla 
+    var valoresPrimeraColumna = []; // Columna con el th -> 1
+    var valoresSegundaColumna = []; // Columna con el th -> Observaciones
+
+    // Recorre cada una de los tr(filas) y obtiene los nuevos valores digitados en la tabla
+    $('#table tbody tr').each(function() { // Para cada tr(fila) del tbody(cuerpo de la tabla), aplico la funcion
+      var inputElem = $(this).find('.col-editable').first().find('input'); // Agarro el primer input de clase .col-editable que encuentre 
+      var nuevoValor = inputElem.val() || inputElem.attr('value'); // Guarda el  valor nuevo 
+      valoresPrimeraColumna.push(nuevoValor); // Añade el valor obtenido a la matriz.
+
+      // Luego de obtener los valores, verifica que "nuevoValor" no esté vacia para guardarla dentro de la tabla
+      if (nuevoValor) {
+        $(this).find('.col-editable').first().html(nuevoValor); //En la fila actual encuentra el primer input perteneciente a la clase .col-editable y plasma su valor en el html
+
+        // Recorre cada uno de los td de la tr(fila) actual
+        $(this).find('td').each(function(index) {
+          if (index > 1 && index < 9) {
+            var valorMultiplicado = nuevoValor * index;
+            $(this).html(valorMultiplicado);
+          }
+        });
+      }
+
+      var inputObsElem = $(this).find('.col-editable').last().find('input');
+
+      // Si el campo est� vac�o, asegurarse de guardarlo como una cadena vac�a
+      var nuevaObservacion = inputObsElem.val() !== undefined ? inputObsElem.val() : '';
+      valoresSegundaColumna.push(nuevaObservacion);
+
+      $(this).find('.col-editable').last().html(nuevaObservacion);
+    });
+
+    $('#editar').show();
+    $('#guardar').hide();
+    let episodio = $("#episodioResult").val();
+    let id = $("#id").val();
+
+    console.log('Valores de la primera columna:', valoresPrimeraColumna);
+    console.log('Valores de la última columna:', valoresSegundaColumna);
+    console.log('Valores del id:', id);
+
+    $.ajax({
+      type: "POST",
+      url: 'http://vmsrv-web2.hospital.com/Nutricion/logica/actualizarEspeciales.php', //aca procesamos el CRUD
+      data: {
+        valoresPrimeraColumna: valoresPrimeraColumna,
+        valoresSegundaColumna: valoresSegundaColumna,
+        id: id
+      },
+      dataType: "json", // Especificamos que esperamos JSON como respuesta
+      success: function(response) {
+        console.log(response); // Para depuraci�n
+        Swal.fire({
+          position: 'top-center',
+          icon: 'success',
+          title: 'Formula actualizada con exito',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      },
+      error: function(xhr, status, error) {
+        console.error("AJAX Error:", status, error);
+        console.log("Response Text:", xhr.responseText); // Mostrar la respuesta completa para depuraci�n
+      }
+    });
+  });
 </script>
 
 <script src="./scripts/TablaEspeciales_Imprimir.js">

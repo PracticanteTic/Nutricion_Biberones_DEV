@@ -39,11 +39,6 @@
 
   <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>-->
 
-
-
-
-
-
   </style>
   <style>
     #spinner {
@@ -200,7 +195,7 @@
       align-items: center;
       cursor: pointer;
       z-index: 1000;
-      /* Asegúrate de que el botón esté siempre en la parte superior */
+      /* Asegï¿½rate de que el botï¿½n estï¿½ siempre en la parte superior */
     }
 
     #soporte {
@@ -284,7 +279,7 @@
           </a>
         </li>
       </ul>
-      <div class="dropdown">
+      <div class="dropdown"> <!-- Desplegable en el nav con las opciones de nombreUsuario y salir (Navbar a la derecha) -->
         <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <strong><span class="hidden-xs" style="color: #3f8755;"><?php echo $_SESSION['nombre']; ?></span></strong>
         </button>
@@ -305,7 +300,7 @@
       </div>
     </nav>
     <!-- /.navbar -->
-    <!-- Main Sidebar Container -->
+    <!-- Main Sidebar Container (Contenedor de la barra lateral principal)-->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a class="brand-link">
@@ -316,22 +311,16 @@
       <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-
           <div class="info">
             <a href="#" class="d-block"><?php echo $_SESSION['nombre']; ?></a>
           </div>
         </div>
         <!-- Sidebar Menu -->
-        <nav class="mt-2">
+        <nav class="mt-2"> <!-- Aca se crean cada una de las opciones del sidebar -->
+          <!-- Lista desordenada con cada opcion del sidebar. Cada li de la lista se crea dependiendo de si existe o no existe su sesiÃ³n -->
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-
-
             <?php
-
-
-
-
             // if ($_SESSION['modificar_estado'] == 1) {
             //   echo '<li class="nav-item">
             //         <a href="../view/Estados_solicitudes.php" class="nav-link active" style="background-color: #3f8755;">
@@ -342,30 +331,34 @@
             //         </a>
             //         </li>';
             // }
-            if ($_SESSION['escritorio'] == 1) {
+
+            /* ------ Seccion para la creacion de cada uno de los li (list items) que conforman al Sidebar: Para cada uno se necesita validar que su respectiva sesiÃ³n exista antes de generar codigo html
+            */
+
+            if ($_SESSION['escritorio'] == 1) { // li para la opciÃ³n de "escitorio"
               echo '<li class="nav-item">
-        <a href="../view/escritorio.php" class="nav-link active" style="background-color: #3f8755;">
-        &nbsp;<i class="fa-solid fa-house fa-lg" style="color: #ffffff;"></i>
-          <p>
-          &nbsp;&nbsp;Inicio
-          </p>
-        </a>
-        </li>';
+                      <a href="../view/escritorio.php" class="nav-link active" style="background-color: #3f8755;">
+                      &nbsp;<i class="fa-solid fa-house fa-lg" style="color: #ffffff;"></i>
+                        <p>
+                          &nbsp;&nbsp;Inicio
+                        </p>
+                      </a>
+                    </li>';
             }
 
             ?>
 
             <?php
-            if ($_SESSION['SolicitudesBiberones'] == 1) {
+            if ($_SESSION['SolicitudesBiberones'] == 1) { // li para la opciÃ³n de SolicitudesBiberones
               echo '<li class="nav-item">
-  <a href="#" class="nav-link active" style="background-color: #3f8755;">
-  &nbsp;<i class="fa-brands fa-wpforms fa-flip-horizontal fa-lg" style="color: #ffffff;"></i>
-    <p>
-    &nbsp;&nbsp;Solicitudes de &nbsp;&nbsp
-      <i class="fas fa-angle-left right"></i> 
-      <br>&nbsp;&nbsp;Biberones
-    </p>
-  </a>
+                      <a href="#" class="nav-link active" style="background-color: #3f8755;">
+                      &nbsp;<i class="fa-brands fa-wpforms fa-flip-horizontal fa-lg" style="color: #ffffff;"></i>
+                      <p>
+                        &nbsp;&nbsp;Solicitudes de &nbsp;&nbsp
+                        <i class="fas fa-angle-left right"></i> 
+                        <br>&nbsp;&nbsp;Biberones
+                      </p>
+                      </a>
   ';
               echo '<ul class="nav nav-treeview" style="display: none;">';
 
@@ -450,7 +443,7 @@
                     </li>';
             }
             ?>
-      
+
 
 
 
@@ -471,7 +464,7 @@
             ?>
 
 
-	<?php
+            <?php
             if ($_SESSION['reporteSolicitudes'] == 1) {
               echo '<li class="nav-item">
                   <a href="../view/reportesSolicitudes.php" class="nav-link active" style="background-color: #3f8755;">
@@ -482,35 +475,34 @@
                     </p>
                   </a>
                   </li>';
-          }
-          ?>
+            }
+            ?>
             <?php
             if ($_SESSION['acceso'] == 1) {
               echo '<li class="nav-item">
-            <a href="#" class="nav-link active" style="background-color: #3f8755;">
-              <i class="nav-icon fas fa-key">
-              </i>
-              <p>
-                Acceso
-                <i class="fas fa-angle-left right"></i>
-                
-              </p>
-            </a>
-            <ul class="nav nav-treeview" style="display: none;">
-              <li class="nav-item">
-                <a href="usuarios.php" class="nav-link">
-                  <i class="far fa-check-circle nav-icon"></i>
-                  <p>Usuarios</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="permisos.php" class="nav-link">
-                <i class="far fa-check-circle nav-icon"></i>
-                  <p>Permisos</p>
-                </a>
-              </li>
-            </ul>
-          </li>';
+                      <a href="#" class="nav-link active" style="background-color: #3f8755;">
+                        <i class="nav-icon fas fa-key">
+                        </i>
+                        <p>
+                          Acceso
+                          <i class="fas fa-angle-left right"></i>
+                        </p>
+                      </a>
+                      <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                          <a href="usuarios.php" class="nav-link">
+                            <i class="far fa-check-circle nav-icon"></i>
+                            <p>Usuarios</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="permisos.php" class="nav-link">
+                          <i class="far fa-check-circle nav-icon"></i>
+                            <p>Permisos</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </li>';
             }
             ?>
 
