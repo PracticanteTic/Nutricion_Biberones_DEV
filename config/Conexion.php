@@ -1,6 +1,7 @@
 <?php
 require_once "global.php"; // Permite usar las constantes definidas en global.php
 
+// Usar mysqli para generar la conexion a la base de datos
 $conexion = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 
 mysqli_query($conexion, 'SET NAMES "' . DB_ENCODE . '"');
