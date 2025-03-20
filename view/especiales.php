@@ -15,28 +15,33 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
 ?>
     <br>
     <script>
-      // Este metodo es llamado apenas cargue todo el DOM
+      // findEspeciales BUSCA Y RETORNA UN JSON CON LAS FORMULAS ASOCIADAS AL EPISODIO COLOCADO EN EL CAMPO "Episodio" DENTRO DEL HTML
+
+      // ******* DEBAJO DE ESTE SCRIPT SE ENCUENTRA EL FORMULARIO CON LOS DATOS CON LOS QUE ESTA FUNCION TRABAJA ********
       function findEspeciales() {
-        button = document.getElementById("consultar"); // Obtiene el boton Consultar
-        button.disabled = true; // Desactiva el boton
+        button = document.getElementById("consultar"); // Obtiene el boton Consultar para desactivarlo mientras realiza la consulta
+        button.disabled = true; // Desactiva el boton durante un tiempo mientras realiza la consulta
         setTimeout(function() { // El boton sera reactivado despues de 200 ms
           button.removeAttribute("disabled");
         }, 200);
 
-        episodioInput = document.getElementById('episodio'); // Obtiene el elemento "episodio" del html
-        episodioValue = 0;
-        if (episodioInput != null) { // Valida que se haya ingresado informacion al input de episodio
-          episodioValue = document.getElementById('episodio').value; // Obtiene el episodio ingresado
+        episodioInput = document.getElementById('episodio'); // Obtiene el elemento con id "episodio" del documento HTML
+        episodioValue = 0; // Inicializa el valor del episodio en 0. Si el usuario no ingresa un episodio y hace clic en consultar, la petición AJAX enviará episodioValue = 0 para que no traiga registros.
 
-          // Realizar la peticion POST para recibir los datos 
+        if (episodioInput != null) { // Verifica que el elemento episodioInout no sea nulo (Exista en el DOM)
+          episodioValue = document.getElementById('episodio').value; // Obtiene el valor ingresado en el input "episodio"
+
+          // Realiza una petición POST para obtener los datos relacionados con el episodio ingresado
           $.ajax({
-            url: "../logica/tablaEspecialesFormulas.php/", // Para obtener los datos
+            url: "../logica/tablaEspecialesFormulas.php/", // Ruta del script que procesará la petición
             method: "POST",
             data: {
-              "episodioValue": episodioValue
+              "episodioValue": episodioValue // Envia el episodio como parámetro
             },
-            success: function(data) { // data contiene la respuesta enviada por tablaEspecialesFormular.php
+            success: function(data) {
+              // 'data' contiene la respuesta del servidor
 
+              // Ejecuta la respuesta recibida como un script de Javascript
               var quickScript2 = new Function($(data).text());
               quickScript2();
             }
@@ -89,12 +94,13 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                   <div id="div_Old_Formula" class="col-md-4" style="margin-top: 6px"> <!-- Contenedor para "Formula a consultar" -->
                     <label id="oldFormulaLbl" for="" class="form-label">Formula a consultar</label>
                     <select class="form-select " name="search_Formula" id="search_Formula" required value="0">
+
                     </select>
                   </div>
 
                   <div class="col-md-1"></div>
 
-                  <div class="col-md-2"> <!-- boton para los datos segun el episodio enviado-->
+                  <div class="col-md-2"> <!-- Boton para consultar los datos segun el episodio y formula seleccioonada -->
                     <div div class="form-group">
                       <input type="submit" id="consultar" name="consultar" class="btn"
                         style="background-color: #95BE27; margin-top:37px;  color:#ffffff" value="Consultar">
@@ -110,7 +116,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
             <hr>
         </form>
         <?php
-        if (isset($_POST['consultar'])) { // Verificar que el btn consultar este declarado / creado
+        // Cuando un formulario es enviado por medio del btn submit, el boton queda inicializado/definido, esta parte del codigo usa la variable global $_POST["consultar"] para ejecutar la consulta SQL solo cuando el btn submit haya sido inicializado/definido.
+        if (isset($_POST['consultar'])) { // 
 
           $episodio = $_POST['episodio'];
           $buscarFormula = $_POST['search_Formula'];
@@ -372,6 +379,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <!-- <div class="col-md-4">
   <a href="imprimirTablaEspeciales.php" style="background-color: #198754;  color: white;padding: 14px 25px; text-align: center; text-decoration: none; display: inline-block;" target="_blank">Imprimir Registros</a>
 </div> -->
+
+              <!-- Tabla con los datos -->
               <table id="table" class="display nowrap" style="width:100%">
                 <thead class="thead-color">
                   <tr>
@@ -390,6 +399,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <tr>
                   <td>Cereal (g)</td>
                   <td id="idCereal" class="col-editable"><?php echo $cereal; ?></td>
+                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
                   <td><?php echo $cereal * 2; ?></td>
                   <td><?php echo $cereal * 3; ?></td>
                   <td><?php echo $cereal * 4; ?></td>
@@ -402,7 +412,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <tr>
                   <td>Aceite (ml)</td>
                   <td id="idAceite" class="col-editable"><?php echo $aceite; ?></td>
-                  <td><?php echo $aceite * 2; ?></td>
+                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                  <td><?php echo $aceite * 2; ?></td> <!--Linea modificada 20/03/2025 10:29am-->
                   <td><?php echo $aceite * 3; ?></td>
                   <td><?php echo $aceite * 4; ?></td>
                   <td><?php echo $aceite * 5; ?></td>
@@ -415,6 +426,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <tr>
                   <td>Procrill (g)</td>
                   <td id="idProcrill" class="col-editable"><?php echo $procrill; ?></td>
+                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
                   <td><?php echo $procrill * 2; ?></td>
                   <td><?php echo $procrill * 3; ?></td>
                   <td><?php echo $procrill * 4; ?></td>
@@ -427,6 +439,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <tr>
                   <td>Nessucar (g)</td>
                   <td id="idNessucar" class="col-editable"><?php echo $nessugar; ?></td>
+                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
                   <td><?php echo $nessugar * 2; ?></td>
                   <td><?php echo $nessugar * 3; ?></td>
                   <td><?php echo $nessugar * 4; ?></td>
@@ -439,6 +452,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <tr>
                   <td>Sal (g)</td>
                   <td id="idSal" class="col-editable"><?php echo $sal; ?></td>
+                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
                   <td><?php echo $sal * 2; ?></td>
                   <td><?php echo $sal * 3; ?></td>
                   <td><?php echo $sal * 4; ?></td>
@@ -451,6 +465,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <tr>
                   <td>Formula (g)</td>
                   <td id="idFormula" class="col-editable"><?php echo $formula; ?></td>
+                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
                   <td><?php echo $formula * 2; ?></td>
                   <td><?php echo $formula * 3; ?></td>
                   <td><?php echo $formula * 4; ?></td>
@@ -463,6 +478,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                 <tr>
                   <td>Otros</td>
                   <td id="idOtros" class="col-editable"><?php echo $otros; ?></td>
+                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
                   <td><?php echo $otros * 2; ?></td>
                   <td><?php echo $otros * 3; ?></td>
                   <td><?php echo $otros * 4; ?></td>
@@ -514,7 +530,7 @@ ob_end_flush();
 
   // Evento al dar clic sobre el boton Editar 
   $('#editar').click(function(e) {
-    e.preventDefault();
+    e.preventDefault(); // Previene que se recarge la pagina
 
     // Habilitar la edicion convirtiendo las celdas en inputs de texto (Solo las de .col-editable)
     $('.col-editable').each(function() {
@@ -534,7 +550,18 @@ ob_end_flush();
     console.log(formula);
   });
 
-  // Evento al dar clic sobre el boton Guardar Cambios
+  // --------------------------------- PRUEBA (Funciona) -------------------------------------------
+  // METODO PARA REALIZAR LA MULTIPLICACION EXACTA DEL VALOR  NUEVO INGRESADO POR EL INDICE
+  function multiplicarConPrecision(val_nuevo, indice) {
+    let decimales = (val_nuevo.toString().split(".")[1] || "").length; // Contar cuántos decimales tiene la base
+
+    let resultado = (val_nuevo * indice).toPrecision(decimales + 1); // Multiplicar usando una corrección para evitar errores
+    
+    return Number(resultado); // Convertir a número real sin errores
+    // --------------------------------- FIN PRUEBA -------------------------------------------
+}
+
+  // ------ INICIO EVENTO ------ Al dar clic sobre el boton Guardar Cambios: Obtiene los valores que fueron modificados de la columna "1" y "observaciones"
   $('#guardar').click(function(e) {
     e.preventDefault(); // Previene que ejecute una accion por defecto de la etiqueta
 
@@ -544,54 +571,65 @@ ob_end_flush();
 
     // Recorre cada una de los tr(filas) y obtiene los nuevos valores digitados en la tabla
     $('#table tbody tr').each(function() { // Para cada tr(fila) del tbody(cuerpo de la tabla), aplico la funcion
-      var inputElem = $(this).find('.col-editable').first().find('input'); // Agarro el primer input de clase .col-editable que encuentre 
+      var inputElem = $(this).find('.col-editable').first().find('input'); // Agarro el primer input de clase .col-editable que encuentre (Corresponde a la columna "1")
       var nuevoValor = inputElem.val() || inputElem.attr('value'); // Guarda el  valor nuevo 
-      valoresPrimeraColumna.push(nuevoValor); // Añade el valor obtenido a la matriz.
+      valoresPrimeraColumna.push(nuevoValor); // Añade el valor obtenido a la matriz de valoresPrimeraColumna.
 
       // Luego de obtener los valores, verifica que "nuevoValor" no esté vacia para guardarla dentro de la tabla
       if (nuevoValor) {
         $(this).find('.col-editable').first().html(nuevoValor); //En la fila actual encuentra el primer input perteneciente a la clase .col-editable y plasma su valor en el html
 
-        // Recorre cada uno de los td de la tr(fila) actual
+        // Recorre cada uno de los td de la tr(fila) actual para realizar el calculo de la MULTIPLICACION
+        var valorMultiplicado;
         $(this).find('td').each(function(index) {
           if (index > 1 && index < 9) {
-            var valorMultiplicado = nuevoValor * index;
+            var valorMultiplicado= multiplicarConPrecision(nuevoValor, index);
+            //var valorMultiplicado = nuevoValor * index;
             $(this).html(valorMultiplicado);
           }
         });
       }
 
-      var inputObsElem = $(this).find('.col-editable').last().find('input');
+      var inputObsElem = $(this).find('.col-editable').last().find('input'); // Agarro el último input de clase .col-editable que encuentre (Corresponde a la columna "Observaciones")
 
-      // Si el campo est� vac�o, asegurarse de guardarlo como una cadena vac�a
+      // Si el campo está vacio, asegurarse de guardarlo como una cadena vacía
       var nuevaObservacion = inputObsElem.val() !== undefined ? inputObsElem.val() : '';
-      valoresSegundaColumna.push(nuevaObservacion);
+      valoresSegundaColumna.push(nuevaObservacion); // Añade el valor obtenido a la matriz de valoresSegundaColumna
 
-      $(this).find('.col-editable').last().html(nuevaObservacion);
+      $(this).find('.col-editable').last().html(nuevaObservacion); // En la fila actual encuentra el ultimo input pertenenciente a la clase .col-editable y plasma su valor en el html
     });
+    // ------ FIN EVENTO -------
 
+    // ------ METODOS DOM ------ Luego de haber dado clic al boton de Guardar, el boton de editar reaparece y el de guardarcambios desaparece (Se oculta)
     $('#editar').show();
     $('#guardar').hide();
-    let episodio = $("#episodioResult").val();
-    let id = $("#id").val();
+    // ------ FIN BLOQUE METODOS DOM ------
 
+
+    let episodio = $("#episodioResult").val(); // Episodio del paciente con la formula cuyos ingredientes se desean modificar
+    let id = $("#id").val(); // Id de la solicitudEspecial (Esta tabla en la db contiene los ingredientes de una formula asociada al paciente con este episodio)
+
+    // Validacion de la informacion usando console.log()
     console.log('Valores de la primera columna:', valoresPrimeraColumna);
     console.log('Valores de la última columna:', valoresSegundaColumna);
     console.log('Valores del id:', id);
 
+    // ------- BLOQUE AJAX ----- Este bloque genera una solicitud al archivo actualizarEspeciales.php esperando recibir una respuesta success confirmando que se actualizo correctamente la formula --> actualizarEspeciales.php hace una consulta a la base de datos para usar un sp que actualiza la formula 
     $.ajax({
-      type: "POST",
-      url: 'http://vmsrv-web2.hospital.com/Nutricion/logica/actualizarEspeciales.php', //aca procesamos el CRUD
-      data: {
+      type: "POST", // Solicitud tipo POST METHOD
+      url: '../logica/actualizarEspeciales.php/', //aca procesamos el CRUD
+      // url: 'http://vmsrv-web2.hospital.com/Nutricion/logica/actualizarEspeciales.php', --> Esto es de produccion
+      data: { // actualizarEspeciales.php requiere los valores a modificar y el id de la solicitudEspecial
         valoresPrimeraColumna: valoresPrimeraColumna,
         valoresSegundaColumna: valoresSegundaColumna,
         id: id
       },
       dataType: "json", // Especificamos que esperamos JSON como respuesta
-      success: function(response) {
-        console.log(response); // Para depuraci�n
-        Swal.fire({
-          position: 'top-center',
+      success: function(response) { 
+        // Si la respuesta fue exitosa, muestra una alerta de confirmación
+        console.log("Dentro del AJAX: " + response); // Para depuración
+        Swal.fire({ // alerta usando sweet alert
+          position: 'center',
           icon: 'success',
           title: 'Formula actualizada con exito',
           showConfirmButton: false,
@@ -601,15 +639,21 @@ ob_end_flush();
       error: function(xhr, status, error) {
         console.error("AJAX Error:", status, error);
         console.log("Response Text:", xhr.responseText); // Mostrar la respuesta completa para depuraci�n
+
+        // -------------------- SWEET ALERT PARA DEPURACION (Colocado para probar): Para saber cuando esta fallando la parte del AJAX ------------------------------
+        // Swal.fire ({
+        //   position: 'center',
+        //   icon: 'error',
+        //   title: 'La formula no se actualizo con exito - Error con el AJAX que hace la peticion a actualizarEspeciales.php',
+        //   showConfirmButton: true
+        // }
+
+        // );
       }
     });
   });
 </script>
 
-<script src="./scripts/TablaEspeciales_Imprimir.js">
+<script src="./scripts/TablaEspeciales_Imprimir.js"></script>
 
-</script>
-
-<script src="./scripts/DataTableEspeciales.js">
-
-</script>
+<script src="./scripts/DataTableEspeciales.js"></script>

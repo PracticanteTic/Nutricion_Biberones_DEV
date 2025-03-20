@@ -5,429 +5,421 @@ session_start();
 include('../config/Conexion.php');
 include_once('../logica/ApiFormula_Especial.php');
 
-if (!isset($_SESSION["nombre"]))
-{
+if (!isset($_SESSION["nombre"])) {
   header("Location: login.html");
-}
-else
-{
-$pageTitle = "Formulario de f贸rmulas especiales";
-require 'template/header.php';
+} else {
+  $pageTitle = "Formulario de f贸rmulas especiales";
+  require 'template/header.php';
 
-if ($_SESSION['AgregarFormulasEspeciales']==1)
-{
-
-
-
+  if ($_SESSION['AgregarFormulasEspeciales'] == 1) {
 
 ?>
 
-<script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Obtener el campo de texto del n煤mero de episodio
+        var episodioInput = document.getElementById('episodioInput');
 
-  document.addEventListener("DOMContentLoaded", function() {
-          // Obtener el campo de texto del n煤mero de episodio
-          var episodioInput = document.getElementById('episodioInput');
+        // Agregar un listener al campo de texto para detectar cuando se presiona el bot贸n "Enter"
+        episodioInput.addEventListener('keypress', function(event) {
+          // Si se presion贸 el bot贸n "Enter", enviar el formulario
+          //Key 13 is Return-Enter
+          if (event.keyCode === 13) {
+            if (typeof console !== "undefined") {
+              console.log('Presionaste Enter'); // Mensaje de depuraci贸n
 
-          // Agregar un listener al campo de texto para detectar cuando se presiona el bot贸n "Enter"
-          episodioInput.addEventListener('keypress', function(event) {
-              // Si se presion贸 el bot贸n "Enter", enviar el formulario
-              //Key 13 is Return-Enter
-              if (event.keyCode === 13) {
-                  if (typeof console !== "undefined") {
-                      console.log('Presionaste Enter'); // Mensaje de depuraci贸n
-                      
-                  }
-                  clearForm();
-                  getInfoAPI();
-                  
+            }
+            clearForm();
+            getInfoAPI();
 
-                  //episodioInput.form.submit();
 
-              }
-          });
-  });
+            //episodioInput.form.submit();
 
-</script>
+          }
+        });
+      });
+    </script>
 
-<!--Contenido-->
-      <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper mt-4">    
-  <div id="alertContainer" class="alert" role="alert"></div>    
-    <form id="formEspecial" method="post">
-      <div class="container">
-        <div class="card shadow p-3 mb-8">
-          <h2 class="text-center  text-success">F贸rmula l谩ctea especial</h2>
-          
-          <div class="card-header  bg-white">
-            <div class="form-group">
-              <div class="row ">
-                <div class="col-4">
-                  <label class="control-label"  for="episodioInput">Episodio</label>
-                  <input type="number" class="form-control border border-dark" id="episodioInput" name="episodioInput" placeholder="Introduce el episodio" required  onfocusout="clearForm();getInfoAPI();" autofocus min=0/>  
+    <!--Contenido-->
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper mt-4">
+      <div id="alertContainer" class="alert" role="alert"></div>
+      <form id="formEspecial" method="post">
+        <div class="container">
+          <div class="card shadow p-3 mb-8">
+            <h2 class="text-center  text-success">F贸rmula l谩ctea especial</h2>
+
+            <div class="card-header  bg-white">
+              <div class="form-group">
+                <div class="row ">
+                  <div class="col-4">
+                    <label class="control-label" for="episodioInput">Episodio</label>
+                    <input type="number" class="form-control border border-dark" id="episodioInput" name="episodioInput" placeholder="Introduce el episodio" required onfocusout="clearForm();getInfoAPI();" autofocus min=0 />
+                  </div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button type="button" id="CancelarEspeciales" class="btn btn-danger" style="margin-top:10%;" onclick="AnularEspeciales();" hidden>Anular Formulas Especiales</button>
+                  </div>
+
+
                 </div>
-                <div class="col-4"></div>
-                <div class="col-4">
-                  <button type="button" id="CancelarEspeciales" class="btn btn-danger" style="margin-top:10%;" onclick="AnularEspeciales();" hidden>Anular Formulas Especiales</button>
-                </div>
-
-                
               </div>
             </div>
-          </div>
 
-        <div class="card-body bg-light">
+            <div class="card-body bg-light">
 
-        <div class="row titles">
-          <div class="col">
-            <div class="well">
-              <h4 class="form-label text-divider"><span class="left-span"></span><span>Informaci贸n del Paciente</span></h4>
-            </div>
-          </div>
-        </div>
+              <div class="row titles">
+                <div class="col">
+                  <div class="well">
+                    <h4 class="form-label text-divider"><span class="left-span"></span><span>Informaci贸n del Paciente</span></h4>
+                  </div>
+                </div>
+              </div>
 
-          <div class="row mb-3">   
-            <div class="col-6">
-              <div class="form-group">
-                  <label class="control-label" for="nombre_apellido">Nombre y apellido</label>
-                  <input type="text" class="form-control bg-white" id="nombre_apellido" name="nombre_apellido" placeholder="---" value="" readonly required autofocus />
-              </div>  
-            </div>  
-            <div class="col-6">
-                <div class="form-group">
+              <div class="row mb-3">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="control-label" for="nombre_apellido">Nombre y apellido</label>
+                    <input type="text" class="form-control bg-white" id="nombre_apellido" name="nombre_apellido" placeholder="---" value="" readonly required autofocus />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="form-group">
                     <label class="control-label" for="identificacion">Identificaci贸n del Paciente</label>
                     <input type="text" class="form-control bg-white" id="identificacion" name="identificacion" placeholder="---" value="" readonly required autofocus />
-                </div>  
-            </div> 
-          </div> 
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="control-label" for="servicios">Servicios de Hospitalizaci贸n</label>
-                <input type="text" class="form-control bg-white" id="servicios_hospitalizacion" name="servicios_hospitalizacion" placeholder="---" value="" readonly required autofocus />
-              </div>  
-            </div> 
-            <div class="col-md-3">
-              <div class="form-group">
-                <label class="control-label" for="cama">Cama</label>
-                <input type="text" class="form-control bg-white" id="cama" name="cama" placeholder="---" value="" readonly required autofocus>
-              </div>  
-            </div>
-              <div class="col-md-3" hidden>
-                <input type="text" class="form-control  bg-white" id="Unidad_Organizativa" name="Unidad_Organizativa" placeholder="---" value="" readonly required autofocus>
-              </div> 
-            <div class="col-md-3">
-              <label for="fecha_nacimiento" class="control-label">Fecha de Nacimiento</label>
-              <input name='fecha_nacimiento' type="date" class="form-control bg-white" id="fecha_nacimiento" value="" readonly required>
-            </div>
-          </div> 
-          <div class="row mb-3"> 
-
-          <div class="row titles">
-            <div class="col">
-              <div class="well">
-                <h4 class="form-label text-divider"><span class="left-span"></span><span>Informaci贸n de la formula</span></h4>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-            
-            <div class="col-md-8">
-              <div class="form-group">
-              <label for="" class="form-label">Nombre de f贸rmula</label>
-                  <select id="select_tipoFormula" class="form-select" name="tipo_formula" onchange="llenarinputcuchara();">
-                    <option selected disabled hidden value>Seleccione Nombre de F贸rmula</option>
-                      <?php 
-                        $consultarformula="SELECT * FROM `tipo_formula` WHERE nombre_formula <> 'FORMULA ESPECIAL' AND Id_especialidad IN (1,2)";
-                        $ejecutar=mysqli_query($conexion, $consultarformula) or die(mysqli_error($conexion));
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label" for="servicios">Servicios de Hospitalizaci贸n</label>
+                    <input type="text" class="form-control bg-white" id="servicios_hospitalizacion" name="servicios_hospitalizacion" placeholder="---" value="" readonly required autofocus />
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label class="control-label" for="cama">Cama</label>
+                    <input type="text" class="form-control bg-white" id="cama" name="cama" placeholder="---" value="" readonly required autofocus>
+                  </div>
+                </div>
+                <div class="col-md-3" hidden>
+                  <input type="text" class="form-control  bg-white" id="Unidad_Organizativa" name="Unidad_Organizativa" placeholder="---" value="" readonly required autofocus>
+                </div>
+                <div class="col-md-3">
+                  <label for="fecha_nacimiento" class="control-label">Fecha de Nacimiento</label>
+                  <input name='fecha_nacimiento' type="date" class="form-control bg-white" id="fecha_nacimiento" value="" readonly required>
+                </div>
+              </div>
+              <div class="row mb-3">
+
+                <div class="row titles">
+                  <div class="col">
+                    <div class="well">
+                      <h4 class="form-label text-divider"><span class="left-span"></span><span>Informaci贸n de la formula</span></h4>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="" class="form-label">Nombre de f贸rmula</label>
+                    <select id="select_tipoFormula" class="form-select" name="tipo_formula" onchange="llenarinputcuchara();">
+                      <option selected disabled hidden value>Seleccione Nombre de F贸rmula</option>
+                      <?php
+                      $consultarformula = "SELECT * FROM `tipo_formula` WHERE nombre_formula <> 'FORMULA ESPECIAL' AND Id_especialidad IN (1,2)";
+                      $ejecutar = mysqli_query($conexion, $consultarformula) or die(mysqli_error($conexion));
                       ?>
 
-                          <?php  
-                          foreach($ejecutar as $opciones):
-                            ?>
-                            
-                    <option value="<?php echo $opciones['id']?>">
-                      <?php 
-                      echo $opciones['nombre_formula']
+                      <?php
+                      foreach ($ejecutar as $opciones):
                       ?>
-                    </option>
-                        
-                          <?php 
-                          endforeach
+
+                        <option value="<?php echo $opciones['id'] ?>">
+                          <?php
+                          echo $opciones['nombre_formula']
                           ?>
+                        </option>
+
+                      <?php
+                      endforeach
+                      ?>
+                    </select>
+
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="control-label" for="cuchara">Tama帽o cuchara medidora (g)</label>
+                    <input type="number" class="form-control bg-white" id="cuchara" name="cuchara" placeholder="Tama帽o (g)" min=0 required readonly autofocus />
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-3">
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="control-label" for="num_teteros">Total de biberones al d铆a</label>
+                    <input type="number" class="form-control" id="numero_biberones" name="numero_biberones" placeholder="Introduzca n煤mero de Biberones" min=0 required autofocus />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label class="control-label" for="volumen_biberon">Volumen de cada biber贸n (cc)</label>
+                    <input type="number" class="form-control" id="volumen_biberon" name="volumen_biberon" placeholder="Introduzca n煤mero de cc" min=0 required autofocus />
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <center><label for="" class="form-label">Chupo</label></center>
+                  <select class="form-select" required name="chupo" id="chupo">
+                    <option id='placeholder' selected disabled hidden value="">Necesita chupo</option>
+                    <?php
+                    $consultarchupo = "SELECT id,chupo FROM chupo";
+                    $ejecutar = mysqli_query($conexion, $consultarchupo) or die(mysqli_error($conexion));
+                    ?>
+                    <?php
+                    foreach ($ejecutar as $opciones):
+                    ?>
+                      <option value="<?php echo $opciones['id'] ?>">
+                        <?php $opciones['id'];
+                        echo $opciones['chupo'] ?>
+                      </option>
+                    <?php endforeach ?>
                   </select>
-                  
-              </div>  
-            </div>    
-            <div class="col-md-4">
-              <div class="form-group">
-                <label class="control-label" for="cuchara">Tama帽o cuchara medidora (g)</label>
-                <input type="number" class="form-control bg-white" id="cuchara" name="cuchara" placeholder="Tama帽o (g)" min=0 required readonly autofocus/>
-              </div>  
-            </div>              
-          </div>
-          <div class="row mb-3"> 
-            
-            <div class="col-md-4">
-              <div class="form-group">
-                <label class="control-label" for="num_teteros">Total de biberones al d铆a</label>
-                <input type="number" class="form-control" id="numero_biberones" name="numero_biberones" placeholder="Introduzca n煤mero de Biberones"  min=0 required autofocus />
-              </div>  
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label class="control-label" for="volumen_biberon">Volumen de cada biber贸n (cc)</label>
-                <input type="number" class="form-control" id="volumen_biberon" name="volumen_biberon" placeholder="Introduzca n煤mero de cc" min=0 required autofocus />
-              </div> 
-            </div> 
+                </div>
 
-<div class="col-md-4">
-              <center><label for="" class="form-label">Chupo</label></center>
-              <select class="form-select" required name="chupo" id="chupo" >
-                  <option id='placeholder' selected disabled hidden value="">Necesita chupo</option>
-                  <?php
-                    $consultarchupo="SELECT id,chupo FROM chupo";
-                    $ejecutar=mysqli_query($conexion, $consultarchupo) or die(mysqli_error($conexion));
-                  ?>
-                  <?php 
-                    foreach($ejecutar as $opciones):
-                  ?>
-                <option value="<?php echo $opciones['id']?>">
-                  <?php $opciones['id'];echo $opciones['chupo']?>
-                </option>
-                  <?php endforeach?>
-              </select>
-            </div>
-
-          </div> 
-          <div class="row mb-3"> 
-            
-          <div class="col-md-2"></div>
-            
-            <div class="col-md-3">
-              <label for="" class="form-label">Fecha de ingreso</label>
-              <input type="text" id="fechaActual" name="fechaActual" class="form-control bg-white" readonly required>
-            </div>               
-                  
-          <div class="col-md-2"></div>
-
-           <div class="col-md-3">
-              <label for="" class="form-label">Hora de ingreso</label>
-              <input type="text" id="reloj" name="reloj" class="form-control bg-white" min="9:00" max="18:00"  readonly value required>
-            </div> 
-            
-          <div class="col-md-2"></div>
-          </div>
-            <br>
-          <div class="row ">
-            <div class="col-12  bg-white d-flex justify-content-center align-items-center">
-              <div class="input-group-append ">
-                <span class=" text-success " id="basic-addon1"><br><h2 style="margin: 0 auto;">Cantidad de ingredientes por un biber贸n</h2><br></span>
               </div>
-            </div>
-          </div>
-            <br>     
-          <div class="row">
-            <div class="col-3">
-              <h6>Ingredientes</h6>
-            </div>
-            <div class="col-5">
-              <h6>Cantidad</h6>
-            </div>
-            <div class="col">
-              <h6>Observaciones</h6>
-            </div>
-            <hr>
-          </div>
+              <div class="row mb-3">
 
-          <div class="row mb-3">
-            <div class="col-2">
-              <label for="cereal1" class="form-label">Cereal (g)</label>
-            </div>
-            <div class="col-4">
-              <input type="number" class="form-control" id="cereal" name="cereal" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1"> 
-                <!-- Se agrega el atributo step para permitir el uso de n鷐eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
-                por 鷏timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
+                <div class="col-md-2"></div>
+
+                <div class="col-md-3">
+                  <label for="" class="form-label">Fecha de ingreso</label>
+                  <input type="text" id="fechaActual" name="fechaActual" class="form-control bg-white" readonly required>
+                </div>
+
+                <div class="col-md-2"></div>
+
+                <div class="col-md-3">
+                  <label for="" class="form-label">Hora de ingreso</label>
+                  <input type="text" id="reloj" name="reloj" class="form-control bg-white" min="9:00" max="18:00" readonly value required>
+                </div>
+
+                <div class="col-md-2"></div>
+              </div>
+              <br>
+              <div class="row ">
+                <div class="col-12  bg-white d-flex justify-content-center align-items-center">
+                  <div class="input-group-append ">
+                    <span class=" text-success " id="basic-addon1"><br>
+                      <h2 style="margin: 0 auto;">Cantidad de ingredientes por un biber贸n</h2><br>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-3">
+                  <h6>Ingredientes</h6>
+                </div>
+                <div class="col-5">
+                  <h6>Cantidad</h6>
+                </div>
+                <div class="col">
+                  <h6>Observaciones</h6>
+                </div>
+                <hr>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-2">
+                  <label for="cereal1" class="form-label">Cereal (g)</label>
+                </div>
+                <div class="col-4">
+                  <input type="number" class="form-control" id="cereal" name="cereal" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
+                  <!-- Se agrega el atributo step para permitir el uso de n锟絤eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
+                por 锟絣timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
                 aproxime, sino que tome que esa cantidad es la real ingresada y no debe ser redondeada.  -->
-            </div>
-            <div class="col-6">
-              <input type="text" class="form-control" id="cereal_observaciones" name="cereal_observaciones" placeholder="Observaciones">
-            </div>
-          </div>
-                    
-          <div class="row mb-3">
-            <div class="col-2">
-              <label for="aceite1" class="form-label">Aceite (ml)</label>
-            </div>
-            <div class="col-4">
-              <input type="number" class="form-control" id="aceite" name="aceite" placeholder="Mililitros" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
-             <!-- Se agrega el atributo step para permitir el uso de n鷐eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
-                por 鷏timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
+                </div>
+                <div class="col-6">
+                  <input type="text" class="form-control" id="cereal_observaciones" name="cereal_observaciones" placeholder="Observaciones">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-2">
+                  <label for="aceite1" class="form-label">Aceite (ml)</label>
+                </div>
+                <div class="col-4">
+                  <input type="number" class="form-control" id="aceite" name="aceite" placeholder="Mililitros" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
+                  <!-- Se agrega el atributo step para permitir el uso de n锟絤eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
+                por 锟絣timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
                 aproxime, sino que tome que esa cantidad es la real ingresada y no debe ser redondeada.  -->
-            </div>
-            <div class="col-6">
-              <input type="text" class="form-control" id="aceite_observaciones" name="aceite_observaciones" placeholder="observaciones">
-            </div>
-          </div>
-        
+                </div>
+                <div class="col-6">
+                  <input type="text" class="form-control" id="aceite_observaciones" name="aceite_observaciones" placeholder="observaciones">
+                </div>
+              </div>
 
-          <div class="row mb-3">
-            <div class="col-2">    
-              <label for="procrill" class="form-label">Procrill (g)</label>
-            </div>            
-            <div class="col-sm-4">
-              <input type="number" class="form-control" id="procrill" name="procrill" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
-             <!-- Se agrega el atributo step para permitir el uso de n鷐eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
-                por 鷏timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
+
+              <div class="row mb-3">
+                <div class="col-2">
+                  <label for="procrill" class="form-label">Procrill (g)</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="number" class="form-control" id="procrill" name="procrill" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
+                  <!-- Se agrega el atributo step para permitir el uso de n锟絤eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
+                por 锟絣timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
                 aproxime, sino que tome que esa cantidad es la real ingresada y no debe ser redondeada.  -->
-            </div>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="procrill_observaciones" name="procrill_observaciones" placeholder="Observaciones">
-            </div>
-          </div>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="procrill_observaciones" name="procrill_observaciones" placeholder="Observaciones">
+                </div>
+              </div>
 
 
-          <div class="row mb-3">
-            <div class="col-2">            
-              <label for="nessugar1" class="form-label">Nessucar (g)</label>
-            </div>  
-            <div class="col-sm-4">
-              <input type="number" class="form-control" id="nessugar" name="nessugar" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
-             <!-- Se agrega el atributo step para permitir el uso de n鷐eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
-                por 鷏timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
+              <div class="row mb-3">
+                <div class="col-2">
+                  <label for="nessugar1" class="form-label">Nessucar (g)</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="number" class="form-control" id="nessugar" name="nessugar" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
+                  <!-- Se agrega el atributo step para permitir el uso de n锟絤eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
+                por 锟絣timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
                 aproxime, sino que tome que esa cantidad es la real ingresada y no debe ser redondeada.  -->
-            </div>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="nessugar_observaciones" name="nessugar_observaciones" placeholder="Observaciones">
-            </div>
-          </div>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="nessugar_observaciones" name="nessugar_observaciones" placeholder="Observaciones">
+                </div>
+              </div>
 
 
-          <div class="row mb-3">
-            <div class="col-2">
-              <label for="sal1" class="form-label">Sal (g)</label>
-            </div>
-            <div class="col-sm-4">
-              <input type="number" class="form-control" id="sal" name="sal" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1"> 
-             <!-- Se agrega el atributo step para permitir el uso de n鷐eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
-                por 鷏timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
+              <div class="row mb-3">
+                <div class="col-2">
+                  <label for="sal1" class="form-label">Sal (g)</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="number" class="form-control" id="sal" name="sal" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
+                  <!-- Se agrega el atributo step para permitir el uso de n锟絤eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
+                por 锟絣timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
                 aproxime, sino que tome que esa cantidad es la real ingresada y no debe ser redondeada.  -->
-            </div>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="sal_observaciones" name="sal_observaciones" placeholder="Observaciones">
-            </div>
-          </div>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="sal_observaciones" name="sal_observaciones" placeholder="Observaciones">
+                </div>
+              </div>
 
 
-          <div class="row mb-3">
-            <div class="col-2">
-              <label for="formula1" class="form-label">F髍mula (g)</label>
-            </div>
-            <div class="col-sm-4">
-              <input type="number" class="form-control" id="formula" name="formula" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
-             <!-- Se agrega el atributo step para permitir el uso de n鷐eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
-                por 鷏timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
+              <div class="row mb-3">
+                <div class="col-2">
+                  <label for="formula1" class="form-label">F锟絩mula (g)</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="number" class="form-control" id="formula" name="formula" placeholder="Gramos" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
+                  <!-- Se agrega el atributo step para permitir el uso de n锟絤eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
+                por 锟絣timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
                 aproxime, sino que tome que esa cantidad es la real ingresada y no debe ser redondeada.  -->
-            </div>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="formula_observaciones" name="formula_observaciones" placeholder="Observaciones">
-            </div>
-          </div>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="formula_observaciones" name="formula_observaciones" placeholder="Observaciones">
+                </div>
+              </div>
 
 
-          <div class="row mb-3">
-            <div class="col-2">
-              <label for="otros1" class="form-label">Otros</label>
-            </div>
-            <div class="col-sm-4">
-              <input type="number" class="form-control" id="otros" name="otros" placeholder="Otros" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1"> 
-             <!-- Se agrega el atributo step para permitir el uso de n鷐eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
-                por 鷏timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
+              <div class="row mb-3">
+                <div class="col-2">
+                  <label for="otros1" class="form-label">Otros</label>
+                </div>
+                <div class="col-sm-4">
+                  <input type="number" class="form-control" id="otros" name="otros" placeholder="Otros" value="" min=0 onkeyup="if(value<0 || value>99) value='';" step="0.1">
+                  <!-- Se agrega el atributo step para permitir el uso de n锟絤eros deciamles y en el onkeyup se realiza que mantenga un rango si es menor a cero y mayor a 99 y
+                por 锟絣timo en la Base de datos se le cambia el tipo de dato a decimal, para que al enviar la formula automaticamente no redondee o 
                 aproxime, sino que tome que esa cantidad es la real ingresada y no debe ser redondeada.-->
-            </div>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" id="otros_observaciones" name="otros_observaciones" placeholder="Observaciones">
-            </div>
-          </div>
-
-                    
-<hr>                    
-          <div class="row mb-3"> 
-            <div class="col-12">
-              <label class="control-label" for="observaciones">Observaciones</label>
-                <textarea rows="2" cols="30" class="form-control" id="observaciones" name="observaciones" placeholder="Introduzca una Observaci贸n" maxlength="30"></textarea>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="otros_observaciones" name="otros_observaciones" placeholder="Observaciones">
+                </div>
               </div>
-            </div>
-            
-            <div class="row mb-3">    
-              <div class="col-6">
-                <div class="form-group">
-                  <label for="" class="form-label">Nutricionista que prescribe</label>
+
+
+              <hr>
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label class="control-label" for="observaciones">Observaciones</label>
+                  <textarea rows="2" cols="30" class="form-control" id="observaciones" name="observaciones" placeholder="Introduzca una Observaci贸n" maxlength="30"></textarea>
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="" class="form-label">Nutricionista que prescribe</label>
                     <select class="form-select" name="select_nutricionista" id="select_nutricionista" onchange="mostrarID();">
                       <option selected disabled hidden value>Seleccione la persona que prescribe</option>
-                        <?php 
-                        $consultarformula="SELECT * FROM nutricionistas";
-                        $ejecutar=mysqli_query($conexion, $consultarformula) or die(mysqli_error($conexion));
-                        $valorSeleccionado = '';
-                        ?>
-                        <?php  foreach($ejecutar as $opciones): ?>
-                        <option value="<?php echo $opciones['codigo_empleado']?>">
-                          <?php  echo $opciones['nombre_completo']?>
+                      <?php
+                      $consultarformula = "SELECT * FROM nutricionistas";
+                      $ejecutar = mysqli_query($conexion, $consultarformula) or die(mysqli_error($conexion));
+                      $valorSeleccionado = '';
+                      ?>
+                      <?php foreach ($ejecutar as $opciones): ?>
+                        <option value="<?php echo $opciones['codigo_empleado'] ?>">
+                          <?php echo $opciones['nombre_completo'] ?>
                         </option>
-                        <?php endforeach;?>
-                          
+                      <?php endforeach; ?>
+
                     </select>
-                </div>  
-              </div>
-              <div class="col-6">
-                <div class="form-group">
-                  <label class="control-label" for="registro">Registro Nutricionista</label>
-                  <input type="text" class="form-control" id="registro" name="registro" placeholder="Registro Nutricionista" value="" required autofocus />
-                </div>  
-              </div> 
-            </div>
-
-            <div class="row mb-3"> 
-              <div class="form-group">
-                <input type="hidden" class="form-control" id="user_registro" name="user_registro" value="<?php echo ($_SESSION["nombre"])?>">
-              </div>
-            </div>
-
-
-<hr>
-            <div class="row">   
-              <div class="form-group">                
-                  <input type="submit" id="agregar" name="agregar"  class="btn" style="background-color: #428E3F; color:white" value="Enviar">
+                  </div>
                 </div>
-              <div id="respuesta" style="display: none;"></div>
-            </div>
-            </div>
-            </div>
+                <div class="col-6">
+                  <div class="form-group">
+                    <label class="control-label" for="registro">Registro Nutricionista</label>
+                    <input type="text" class="form-control" id="registro" name="registro" placeholder="Registro Nutricionista" value="" required autofocus />
+                  </div>
+                </div>
+              </div>
 
+              <div class="row mb-3">
+                <div class="form-group">
+                  <input type="hidden" class="form-control" id="user_registro" name="user_registro" value="<?php echo ($_SESSION["nombre"]) ?>">
+                </div>
+              </div>
+
+
+              <hr>
+              <div class="row">
+                <div class="form-group">
+                  <input type="submit" id="agregar" name="agregar" class="btn" style="background-color: #428E3F; color:white" value="Enviar">
+                </div>
+                <div id="respuesta" style="display: none;"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
     </div>
-  </div>
-</form>
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-  <div id="liveToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body" id="miAlerta"></div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </form>
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+      <div id="liveToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" id="miAlerta"></div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
     </div>
-  </div>
-</div>  
 
 
-      </div><!-- /.content-wrapper -->
-  <!--Fin-Contenido-->
+    </div><!-- /.content-wrapper -->
+    <!--Fin-Contenido-->
+  <?php
+  } else {
+    require 'noacceso.php';
+  }
+
+  require 'template/footer.php';
+  ?>
+
 <?php
-}
-else
-{
-  require 'noacceso.php';
-}
-
-require 'template/footer.php';
-?>
-
-<?php 
 }
 ob_end_flush();
 ?>
@@ -438,63 +430,67 @@ ob_end_flush();
     $('#formEspecial').submit(function(e) {
       e.preventDefault();
       $.ajax({
-          type: "POST",
-          url: '../logica/guardar_formulaEspecial.php',
-          data: $(this).serialize(),
-          success: function(response){
-            console.log(response);
-            if(response==0){
+        type: "POST",
+        url: '../logica/guardar_formulaEspecial.php',
+        data: $(this).serialize(),
+        success: function(response) {
+          console.log(response);
+          if (response == 0) {
 
             Swal.fire({
               icon: 'success',
               title: 'Registro Exitoso',
               showConfirmButton: false,
-              timer: 1500  
-          })
-          setTimeout(function(){location.reload();}, 2000);
-        }else if(response==1){
-          Swal.fire({
+              timer: 1500
+            })
+            setTimeout(function() {
+              location.reload();
+            }, 2000);
+          } else if (response == 1) {
+            Swal.fire({
               icon: 'error',
               title: 'Ya existe una solicitud especial para este episodio',
               showConfirmButton: false,
-              timer: 1500  
-          })
-          setTimeout(function(){location.reload();}, 2000);
+              timer: 1500
+            })
+            setTimeout(function() {
+              location.reload();
+            }, 2000);
 
-        }else{
-          Swal.fire({
+          } else {
+            Swal.fire({
               icon: 'error',
               title: 'Error al insertar, revise que los datos esten correctos',
               showConfirmButton: false,
-              timer: 1500  
-          })
-        }
-        
-      }
+              timer: 1500
+            })
+          }
 
+        }
+
+      });
     });
   });
-});
 </script>
 <script src="./scripts/AgregarEspecial_RegistroNutricionista.js"></script>
 
 <script>
-function llenarinputcuchara(){
-  var select_formula = document.getElementById("select_tipoFormula").value;
-  var opcion = { valor: select_formula };
+  function llenarinputcuchara() { // El metodo es llamado cuando se detecta un cambio en el select del nombre de la formula 
+    var select_formula = document.getElementById("select_tipoFormula").value;
+    var opcion = {
+      valor: select_formula
+    };
 
-  $.ajax({
-    type: "POST",
-    url: '../logica/consultarValorCuchara.php',
-    data: opcion,
-    success: function(response){
-      $("#cuchara").val(response);
-      console.log(response);
-    }
-  });
-}
-  
-  
+    $.ajax({
+      type: "POST",
+      url: '../logica/consultarValorCuchara.php',
+      data: opcion,
+      success: function(response) {
+        $("#cuchara").val(response);
+        console.log(response);
+      }
+    });
+  }
 </script>
 
 
@@ -530,7 +526,7 @@ $("#select_tipoFormula option:selected").each(function() {
 </script>
 
 <script src="./scripts/AgregarEspecial_HoraActual.js"></script>
-  
+
 
 
 
