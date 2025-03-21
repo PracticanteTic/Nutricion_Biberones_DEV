@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('#table').DataTable({
+      "ordering":false, // Evita que organice los datos 
       language: {
         // configuración del idioma
       },

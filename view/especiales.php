@@ -159,9 +159,8 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
 
           $result_biberones = mysqli_query($conexion, $query);
 
-
           while ($row = mysqli_fetch_array($result_biberones)) {
-            $fecha_modificacion = $row["fecha_modificacion"];
+            $fecha_modificacion = $row['fecha_modificacion'];
             $episodio = $row['episodio'];
             $identificacion = $row['identificacion'];
             $tipo_formula = $row['nombre_formula'];
@@ -383,7 +382,7 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
               <!-- Tabla con los datos -->
               <table id="table" class="display nowrap" style="width:100%">
                 <thead class="thead-color">
-                  <tr>
+                  <tr id="rowEncabezado">
                     <th class="text-center justify-content-center align-middle bg-success" scope="col">Ingredientes</th>
                     <th class="text-center justify-content-center align-middle bg-success" scope="col">1</th>
                     <th class="text-center justify-content-center align-middle bg-success" scope="col">2</th>
@@ -396,103 +395,101 @@ if (!isset($_SESSION["nombre"])) { // Verifica si aun no se ha iniciado sesion (
                     <th class="text-center justify-content-center align-middle bg-success" scope="col">Observaciones</th>
                   </tr>
                 </thead>
-                <tr>
-                  <td>Cereal (g)</td>
-                  <td id="idCereal" class="col-editable"><?php echo $cereal; ?></td>
-                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
-                  <td><?php echo $cereal * 2; ?></td>
-                  <td><?php echo $cereal * 3; ?></td>
-                  <td><?php echo $cereal * 4; ?></td>
-                  <td><?php echo $cereal * 5; ?></td>
-                  <td><?php echo $cereal * 6; ?></td>
-                  <td><?php echo $cereal * 7; ?></td>
-                  <td><?php echo $cereal * 8; ?></td>
-                  <td id="idCerealObs" class="col-editable"><?php echo $cereal_obsvc; ?></td> <!-- Campo observaciones -->
-                </tr>
-                <tr>
-                  <td>Aceite (ml)</td>
-                  <td id="idAceite" class="col-editable"><?php echo $aceite; ?></td>
-                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
-                  <td><?php echo $aceite * 2; ?></td> <!--Linea modificada 20/03/2025 10:29am-->
-                  <td><?php echo $aceite * 3; ?></td>
-                  <td><?php echo $aceite * 4; ?></td>
-                  <td><?php echo $aceite * 5; ?></td>
-                  <td><?php echo $aceite * 6; ?></td>
-                  <td><?php echo $aceite * 7; ?></td>
-                  <td><?php echo $aceite * 8; ?></td>
-                  <td id="idAceiteObs" class="col-editable"><?php echo $aceite_obsvc; ?></td> <!-- Campo observaciones -->
+                <tbody> <!--ESTO LO AGREGUE YO, METER LOS TR ESOS DENTRO DEL BODY PORQUE SE SUPONE QUE HACEN PARTE DE ESTE-->
+                  <tr id="rowCereal">
+                    <td>Cereal (g)</td>
+                    <td id="idCereal" class="col-editable"><?php echo $cereal; ?></td>
+                    <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                    <td><?php echo $cereal * 2; ?></td>
+                    <td><?php echo $cereal * 3; ?></td>
+                    <td><?php echo $cereal * 4; ?></td>
+                    <td><?php echo $cereal * 5; ?></td>
+                    <td><?php echo $cereal * 6; ?></td>
+                    <td><?php echo $cereal * 7; ?></td>
+                    <td><?php echo $cereal * 8; ?></td>
+                    <td id="idCerealObs" class="col-editable"><?php echo $cereal_obsvc; ?></td> <!-- Campo observaciones -->
+                  </tr>
+                  <tr id="rowAceite">
+                    <td>Aceite (ml)</td>
+                    <td id="idAceite" class="col-editable"><?php echo $aceite; ?></td>
+                    <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                    <td><?php echo $aceite * 2; ?></td> <!--Linea modificada 20/03/2025 10:29am-->
+                    <td><?php echo $aceite * 3; ?></td>
+                    <td><?php echo $aceite * 4; ?></td>
+                    <td><?php echo $aceite * 5; ?></td>
+                    <td><?php echo $aceite * 6; ?></td>
+                    <td><?php echo $aceite * 7; ?></td>
+                    <td><?php echo $aceite * 8; ?></td>
+                    <td id="idAceiteObs" class="col-editable"><?php echo $aceite_obsvc; ?></td> <!-- Campo observaciones -->
 
-                </tr>
-                <tr>
-                  <td>Procrill (g)</td>
-                  <td id="idProcrill" class="col-editable"><?php echo $procrill; ?></td>
-                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
-                  <td><?php echo $procrill * 2; ?></td>
-                  <td><?php echo $procrill * 3; ?></td>
-                  <td><?php echo $procrill * 4; ?></td>
-                  <td><?php echo $procrill * 5; ?></td>
-                  <td><?php echo $procrill * 6; ?></td>
-                  <td><?php echo $procrill * 7; ?></td>
-                  <td><?php echo $procrill * 8; ?></td>
-                  <td id="idProcrillObs" class="col-editable"><?php echo $procrill_obsvc; ?></td> <!-- Campo observaciones -->
-                </tr>
-                <tr>
-                  <td>Nessucar (g)</td>
-                  <td id="idNessucar" class="col-editable"><?php echo $nessugar; ?></td>
-                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
-                  <td><?php echo $nessugar * 2; ?></td>
-                  <td><?php echo $nessugar * 3; ?></td>
-                  <td><?php echo $nessugar * 4; ?></td>
-                  <td><?php echo $nessugar * 5; ?></td>
-                  <td><?php echo $nessugar * 6; ?></td>
-                  <td><?php echo $nessugar * 7; ?></td>
-                  <td><?php echo $nessugar * 8; ?></td>
-                  <td id="idNessucarObs" class="col-editable"><?php echo $nessugar_obsvc; ?></td> <!-- Campo observaciones -->
-                </tr>
-                <tr>
-                  <td>Sal (g)</td>
-                  <td id="idSal" class="col-editable"><?php echo $sal; ?></td>
-                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
-                  <td><?php echo $sal * 2; ?></td>
-                  <td><?php echo $sal * 3; ?></td>
-                  <td><?php echo $sal * 4; ?></td>
-                  <td><?php echo $sal * 5; ?></td>
-                  <td><?php echo $sal * 6; ?></td>
-                  <td><?php echo $sal * 7; ?></td>
-                  <td><?php echo $sal * 8; ?></td>
-                  <td id="idSalObs" class="col-editable"><?php echo $sal_obsvc; ?></td> <!-- Campo observaciones -->
-                </tr>
-                <tr>
-                  <td>Formula (g)</td>
-                  <td id="idFormula" class="col-editable"><?php echo $formula; ?></td>
-                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
-                  <td><?php echo $formula * 2; ?></td>
-                  <td><?php echo $formula * 3; ?></td>
-                  <td><?php echo $formula * 4; ?></td>
-                  <td><?php echo $formula * 5; ?></td>
-                  <td><?php echo $formula * 6; ?></td>
-                  <td><?php echo $formula * 7; ?></td>
-                  <td><?php echo $formula * 8; ?></td>
-                  <td id="idFormulaObs" class="col-editable"><?php echo $formula_obsvc; ?></td> <!-- Campo observaciones -->
-                </tr>
-                <tr>
-                  <td>Otros</td>
-                  <td id="idOtros" class="col-editable"><?php echo $otros; ?></td>
-                  <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
-                  <td><?php echo $otros * 2; ?></td>
-                  <td><?php echo $otros * 3; ?></td>
-                  <td><?php echo $otros * 4; ?></td>
-                  <td><?php echo $otros * 5; ?></td>
-                  <td><?php echo $otros * 6; ?></td>
-                  <td><?php echo $otros * 7; ?></td>
-                  <td><?php echo $otros * 8; ?></td>
-                  <td id="idOtrosObs" class="col-editable"><?php echo $otros_obsvc; ?></td> <!-- Campo observaciones -->
-                </tr>
-              <?php } ?>
-              <tbody>
-
-
-              </tbody>
+                  </tr>
+                  <tr id="rowProcrill">
+                    <td>Procrill (g)</td>
+                    <td id="idProcrill" class="col-editable"><?php echo $procrill; ?></td>
+                    <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                    <td><?php echo $procrill * 2; ?></td>
+                    <td><?php echo $procrill * 3; ?></td>
+                    <td><?php echo $procrill * 4; ?></td>
+                    <td><?php echo $procrill * 5; ?></td>
+                    <td><?php echo $procrill * 6; ?></td>
+                    <td><?php echo $procrill * 7; ?></td>
+                    <td><?php echo $procrill * 8; ?></td>
+                    <td id="idProcrillObs" class="col-editable"><?php echo $procrill_obsvc; ?></td> <!-- Campo observaciones -->
+                  </tr>
+                  <tr id="rowNessucar">
+                    <td>Nessucar (g)</td>
+                    <td id="idNessucar" class="col-editable"><?php echo $nessugar; ?></td>
+                    <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                    <td><?php echo $nessugar * 2; ?></td>
+                    <td><?php echo $nessugar * 3; ?></td>
+                    <td><?php echo $nessugar * 4; ?></td>
+                    <td><?php echo $nessugar * 5; ?></td>
+                    <td><?php echo $nessugar * 6; ?></td>
+                    <td><?php echo $nessugar * 7; ?></td>
+                    <td><?php echo $nessugar * 8; ?></td>
+                    <td id="idNessucarObs" class="col-editable"><?php echo $nessugar_obsvc; ?></td> <!-- Campo observaciones -->
+                  </tr>
+                  <tr id="rowSal">
+                    <td>Sal (g)</td>
+                    <td id="idSal" class="col-editable"><?php echo $sal; ?></td>
+                    <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                    <td><?php echo $sal * 2; ?></td>
+                    <td><?php echo $sal * 3; ?></td>
+                    <td><?php echo $sal * 4; ?></td>
+                    <td><?php echo $sal * 5; ?></td>
+                    <td><?php echo $sal * 6; ?></td>
+                    <td><?php echo $sal * 7; ?></td>
+                    <td><?php echo $sal * 8; ?></td>
+                    <td id="idSalObs" class="col-editable"><?php echo $sal_obsvc; ?></td> <!-- Campo observaciones -->
+                  </tr>
+                  <tr id="rowFormula">
+                    <td>Formula (g)</td>
+                    <td id="idFormula" class="col-editable"><?php echo $formula; ?></td>
+                    <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                    <td><?php echo $formula * 2; ?></td>
+                    <td><?php echo $formula * 3; ?></td>
+                    <td><?php echo $formula * 4; ?></td>
+                    <td><?php echo $formula * 5; ?></td>
+                    <td><?php echo $formula * 6; ?></td>
+                    <td><?php echo $formula * 7; ?></td>
+                    <td><?php echo $formula * 8; ?></td>
+                    <td id="idFormulaObs" class="col-editable"><?php echo $formula_obsvc; ?></td> <!-- Campo observaciones -->
+                  </tr>
+                  <tr id="rowOtros">
+                    <td>Otros</td>
+                    <td id="idOtros" class="col-editable"><?php echo $otros; ?></td>
+                    <!-- Multiplicacion cuando los datos de la columna "1" son ingresados por primera vez -->
+                    <td><?php echo $otros * 2; ?></td>
+                    <td><?php echo $otros * 3; ?></td>
+                    <td><?php echo $otros * 4; ?></td>
+                    <td><?php echo $otros * 5; ?></td>
+                    <td><?php echo $otros * 6; ?></td>
+                    <td><?php echo $otros * 7; ?></td>
+                    <td><?php echo $otros * 8; ?></td>
+                    <td id="idOtrosObs" class="col-editable"><?php echo $otros_obsvc; ?></td> <!-- Campo observaciones -->
+                  </tr>
+                <?php } ?>
+                </tbody>
               </table>
               <!-- BOTONES PARA EDITAR LA TABLA Y GUARDAR SUS CAMBIOS -->
               <button class="btn" style="background-color:#95BE27; margin-top:37px;  color:#ffffff" id="editar">EDITAR</buttonc>
@@ -526,6 +523,7 @@ ob_end_flush();
 <script>
   $(document).ready(function() {
     $('#guardar').hide();
+
   });
 
   // Evento al dar clic sobre el boton Editar 
@@ -534,7 +532,7 @@ ob_end_flush();
 
     // Habilitar la edicion convirtiendo las celdas en inputs de texto (Solo las de .col-editable)
     $('.col-editable').each(function() {
-      var currentValue = $(this).text(); // Guardo el valor del elemento
+      var currentValue = $(this).text(); // Convierto en texto y guardo el valor del campo
       $(this).html('<input type="text" value="' + currentValue + '" />'); // Asigna contenido html a la etiqueta
     });
 
@@ -542,7 +540,7 @@ ob_end_flush();
     $('#editar').hide();
     $('#guardar').show();
   });
-  
+
 
   // #search_Formula 
   $("#search_Formula").change(function() { // Se ejecuta cada que seleccionan una opcion diferentes en el select
@@ -550,21 +548,22 @@ ob_end_flush();
     console.log(formula);
   });
 
-  // --------------------------------- PRUEBA (Funciona) -------------------------------------------
   // METODO PARA REALIZAR LA MULTIPLICACION EXACTA DEL VALOR  NUEVO INGRESADO POR EL INDICE
   function multiplicarConPrecision(val_nuevo, indice) {
     let decimales = (val_nuevo.toString().split(".")[1] || "").length; // Contar cuántos decimales tiene la base
 
     let resultado = (val_nuevo * indice).toPrecision(decimales + 1); // Multiplicar usando una corrección para evitar errores
-    
+
     return Number(resultado); // Convertir a número real sin errores
-    // --------------------------------- FIN PRUEBA -------------------------------------------
-}
+  }
 
   // ------ INICIO EVENTO ------ Al dar clic sobre el boton Guardar Cambios: Obtiene los valores que fueron modificados de la columna "1" y "observaciones"
-  $('#guardar').click(function(e) {
-    e.preventDefault(); // Previene que ejecute una accion por defecto de la etiqueta
+  // Recorre cada una de los tr(filas) y obtiene los nuevos valores digitados en la tabla
 
+
+  // GUARDAR (ORIGINAL)
+  $('#guardar').click(function(e) {
+    e.preventDefault(); // Previene que el boton recarge la pagina
     // Arrays para guardar los valores que sean introducidos (modificados) de la tabla 
     var valoresPrimeraColumna = []; // Columna con el th -> 1
     var valoresSegundaColumna = []; // Columna con el th -> Observaciones
@@ -579,11 +578,15 @@ ob_end_flush();
       if (nuevoValor) {
         $(this).find('.col-editable').first().html(nuevoValor); //En la fila actual encuentra el primer input perteneciente a la clase .col-editable y plasma su valor en el html
 
+        // ------------------------- DEPURACIÓN: Para saber a que fila se refiere cada $(this)----------------------------------
+        $idFila = $(this).attr('id');
+        console.log(`Depuracion - Id fila: ${$idFila}`); // Deseo visualizar el id de la fila actual
+
         // Recorre cada uno de los td de la tr(fila) actual para realizar el calculo de la MULTIPLICACION
         var valorMultiplicado;
         $(this).find('td').each(function(index) {
           if (index > 1 && index < 9) {
-            var valorMultiplicado= multiplicarConPrecision(nuevoValor, index);
+            var valorMultiplicado = multiplicarConPrecision(nuevoValor, index);
             //var valorMultiplicado = nuevoValor * index;
             $(this).html(valorMultiplicado);
           }
@@ -597,7 +600,7 @@ ob_end_flush();
       valoresSegundaColumna.push(nuevaObservacion); // Añade el valor obtenido a la matriz de valoresSegundaColumna
 
       $(this).find('.col-editable').last().html(nuevaObservacion); // En la fila actual encuentra el ultimo input pertenenciente a la clase .col-editable y plasma su valor en el html
-    });
+    }); 
     // ------ FIN EVENTO -------
 
     // ------ METODOS DOM ------ Luego de haber dado clic al boton de Guardar, el boton de editar reaparece y el de guardarcambios desaparece (Se oculta)
@@ -625,7 +628,7 @@ ob_end_flush();
         id: id
       },
       dataType: "json", // Especificamos que esperamos JSON como respuesta
-      success: function(response) { 
+      success: function(response) {
         // Si la respuesta fue exitosa, muestra una alerta de confirmación
         console.log("Dentro del AJAX: " + response); // Para depuración
         Swal.fire({ // alerta usando sweet alert
@@ -656,4 +659,4 @@ ob_end_flush();
 
 <script src="./scripts/TablaEspeciales_Imprimir.js"></script>
 
-<script src="./scripts/DataTableEspeciales.js"></script>
+<script src="./scripts/DataTableEspeciales.js"></script> <!--Script que inicializa el DataTable -->

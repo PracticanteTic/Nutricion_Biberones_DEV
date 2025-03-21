@@ -135,7 +135,7 @@ if (!isset($_SESSION["nombre"])) {
                       foreach ($ejecutar as $opciones):
                       ?>
 
-                        <option value="<?php echo $opciones['id'] ?>">
+                        <option value="<?php echo $opciones['id'] ?>"> <!--El value de cada OPTION sera el id sacado de la tabla tipo_formula de la bd-->
                           <?php
                           echo $opciones['nombre_formula']
                           ?>
@@ -475,24 +475,33 @@ ob_end_flush();
 <script src="./scripts/AgregarEspecial_RegistroNutricionista.js"></script>
 
 <script>
-  function llenarinputcuchara() { // El metodo es llamado cuando se detecta un cambio en el select del nombre de la formula 
-    var select_formula = document.getElementById("select_tipoFormula").value;
+  function llenarinputcuchara() { // El metodo es llamado cuando se detecta un cambio en el select del nombre de la formula y es usado para devolver el valor que deberia ir en el campo de tamaño cuchara
+    var select_formula = document.getElementById("select_tipoFormula").value; // Guarda el id del tipo_formula 
     var opcion = {
       valor: select_formula
     };
 
     $.ajax({
       type: "POST",
-      url: '../logica/consultarValorCuchara.php',
+      url: '../logica/consultarValorCuchara.php', // URL a donde se enviara la petición
       data: opcion,
       success: function(response) {
-        $("#cuchara").val(response);
-        console.log(response);
+        console.log(response); // Depuración 
+        // Si la respuesta es success, asigna al campo cuchara el value recibido como respuesta
+        $("#cuchara").val(Number(response)); // La respuesta la parseo a Number
+      } ,
+      error: function(xhr, status, error) {
+        console.error("AJAX Error:", status, error);
+        console.log("Response Text:", xhr.responseText); // Mostrar la respuesta completa para depuración
       }
     });
   }
 </script>
 
+<!-- var respuestaNumero = Number(response); // La respuesta la parseo a Number
+console.log(respuestaNumero); // Depuración 
+// Si la respuesta es success, asigna al campo cuchara el value recibido como respuesta
+$("#cuchara").val(respuestaNumero); -->
 
 <!-- <script>
  $("#select_tipoFormula").change(function() {
